@@ -37,15 +37,15 @@ POSSIBILITY OF SUCH DAMAGE.  */
    won't work if the attributes are not recognized.  */
 
 #ifndef GCC_VERSION
-# define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__)
+#define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__)
 #endif
 
 #if (GCC_VERSION < 2007)
-# define __attribute__(x)
+#define __attribute__(x)
 #endif
 
 #ifndef ATTRIBUTE_UNUSED
-# define ATTRIBUTE_UNUSED __attribute__ ((__unused__))
+#define ATTRIBUTE_UNUSED __attribute__ ((__unused__))
 #endif
 
 /* Used to collect backtrace info.  */
@@ -96,14 +96,14 @@ extern int failures;
 
 extern const char *base (const char *p);
 extern void check (const char *name, int index, const struct info *all,
-		   int want_lineno, const char *want_function,
-		   const char *want_file, int *failed);
+                   int want_lineno, const char *want_function,
+                   const char *want_file, int *failed);
 extern int callback_one (void *, uintptr_t, const char *, int, const char *);
 extern void error_callback_one (void *, const char *, int);
 extern int callback_two (void *, uintptr_t);
 extern void error_callback_two (void *, const char *, int);
 extern void callback_three (void *, uintptr_t, const char *, uintptr_t,
-			    uintptr_t);
+                            uintptr_t);
 extern void error_callback_three (void *, const char *, int);
 extern void error_callback_create (void *, const char *, int);
 

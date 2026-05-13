@@ -41,8 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #include "filenames.h"
 
-#include "backtrace.h"
 #include "backtrace-supported.h"
+#include "backtrace.h"
 
 #include "testlib.h"
 
@@ -57,7 +57,7 @@ test1_thread (void *arg ATTRIBUTE_UNUSED)
 {
   /* Returning a value here and elsewhere avoids a tailcall which
      would mess up the backtrace.  */
-  return (void *) (uintptr_t) (f2 (__LINE__) - 2);
+  return (void *)(uintptr_t)(f2 (__LINE__) - 2);
 }
 
 static int
@@ -91,8 +91,8 @@ f3 (int f1line, int f2line)
   if (data.index < 3)
     {
       fprintf (stderr,
-	       "test1: not enough frames; got %zu, expected at least 3\n",
-	       data.index);
+               "test1: not enough frames; got %zu, expected at least 3\n",
+               data.index);
       data.failed = 1;
     }
 
@@ -122,10 +122,10 @@ test1 (void)
     {
       errnum = pthread_create (&atid[i], NULL, test1_thread, NULL);
       if (errnum != 0)
-	{
-	  fprintf (stderr, "pthread_create %d: %s\n", i, strerror (errnum));
-	  exit (EXIT_FAILURE);
-	}
+        {
+          fprintf (stderr, "pthread_create %d: %s\n", i, strerror (errnum));
+          exit (EXIT_FAILURE);
+        }
     }
 
   this_fail = 0;
@@ -133,14 +133,15 @@ test1 (void)
     {
       errnum = pthread_join (atid[i], &ret);
       if (errnum != 0)
-	{
-	  fprintf (stderr, "pthread_join %d: %s\n", i, strerror (errnum));
-	  exit (EXIT_FAILURE);
-	}
-      this_fail += (int) (uintptr_t) ret;
+        {
+          fprintf (stderr, "pthread_join %d: %s\n", i, strerror (errnum));
+          exit (EXIT_FAILURE);
+        }
+      this_fail += (int)(uintptr_t)ret;
     }
 
-  printf ("%s: threaded backtrace_full noinline\n", this_fail > 0 ? "FAIL" : "PASS");
+  printf ("%s: threaded backtrace_full noinline\n",
+          this_fail > 0 ? "FAIL" : "PASS");
 
   failures += this_fail;
 }
@@ -149,7 +150,7 @@ int
 main (int argc ATTRIBUTE_UNUSED, char **argv)
 {
   state = backtrace_create_state (argv[0], BACKTRACE_SUPPORTS_THREADS,
-				  error_callback_create, NULL);
+                                  error_callback_create, NULL);
 
 #if BACKTRACE_SUPPORTED
 #if BACKTRACE_SUPPORTS_THREADS

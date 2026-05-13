@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include <string.h>
 #include <sys/types.h>
 
-#include "backtrace.h"
 #include "backtrace-supported.h"
+#include "backtrace.h"
 #include "internal.h"
 
 #include "testlib.h"
@@ -109,12 +109,11 @@ main (int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED)
   // allocated memory from the free list. Doing things this way helps
   // simulate what you might see in a multithreaded program in which there
   // are racing calls to the allocator.
-  struct backtrace_state *state_internal =
-      (struct backtrace_state *) state;
+  struct backtrace_state *state_internal = (struct backtrace_state *)state;
   state_internal->lock_alloc = 1;
 
   // Kick off the test
-  test1();
+  test1 ();
 
   exit (failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS);
 }

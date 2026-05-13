@@ -34,9 +34,9 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #include <sys/types.h>
 
-#include "unwind.h"
 #include "backtrace.h"
 #include "internal.h"
+#include "unwind.h"
 
 /* The main backtrace_full routine.  */
 
@@ -66,7 +66,7 @@ struct backtrace_data
 static _Unwind_Reason_Code
 unwind (struct _Unwind_Context *context, void *vdata)
 {
-  struct backtrace_data *bdata = (struct backtrace_data *) vdata;
+  struct backtrace_data *bdata = (struct backtrace_data *)vdata;
   uintptr_t pc;
   int ip_before_insn = 0;
 
@@ -89,7 +89,7 @@ unwind (struct _Unwind_Context *context, void *vdata)
     bdata->ret = bdata->callback (bdata->data, pc, NULL, 0, NULL);
   else
     bdata->ret = backtrace_pcinfo (bdata->state, pc, bdata->callback,
-				   bdata->error_callback, bdata->data);
+                                   bdata->error_callback, bdata->data);
   if (bdata->ret != 0)
     return _URC_END_OF_STACK;
 
@@ -98,10 +98,10 @@ unwind (struct _Unwind_Context *context, void *vdata)
 
 /* Get a stack backtrace.  */
 
-int __attribute__((noinline))
+int __attribute__ ((noinline))
 backtrace_full (struct backtrace_state *state, int skip,
-		backtrace_full_callback callback,
-		backtrace_error_callback error_callback, void *data)
+                backtrace_full_callback callback,
+                backtrace_error_callback error_callback, void *data)
 {
   struct backtrace_data bdata;
   void *p;

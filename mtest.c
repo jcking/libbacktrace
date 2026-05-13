@@ -42,8 +42,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include <stdlib.h>
 #include <string.h>
 
-#include "backtrace.h"
 #include "backtrace-supported.h"
+#include "backtrace.h"
 
 #include "testlib.h"
 
@@ -60,9 +60,9 @@ static uintptr_t addrs[20];
 
 static int
 callback_mtest (void *vdata, uintptr_t pc, const char *filename, int lineno,
-		const char *function)
+                const char *function)
 {
-  struct bdata *data = (struct bdata *) vdata;
+  struct bdata *data = (struct bdata *)vdata;
 
   if (data->index >= sizeof addrs / sizeof addrs[0])
     {
@@ -118,8 +118,8 @@ f3 (int f1line __attribute__ ((unused)), int f2line __attribute__ ((unused)))
   if (data.index < 3)
     {
       fprintf (stderr,
-	       "test1: not enough frames; got %zu, expected at least 3\n",
-	       data.index);
+               "test1: not enough frames; got %zu, expected at least 3\n",
+               data.index);
       data.failed = 1;
     }
 
@@ -128,77 +128,77 @@ f3 (int f1line __attribute__ ((unused)), int f2line __attribute__ ((unused)))
   for (j = 0; j < 3 && j < data.index; j++)
     {
       if (all[j].function == NULL)
-	{
-	  struct symdata symdata;
+        {
+          struct symdata symdata;
 
-	  symdata.name = NULL;
-	  symdata.val = 0;
-	  symdata.size = 0;
-	  symdata.failed = 0;
+          symdata.name = NULL;
+          symdata.val = 0;
+          symdata.size = 0;
+          symdata.failed = 0;
 
-	  i = backtrace_syminfo (state, addrs[j], callback_three,
-				 error_callback_three, &symdata);
-	  if (i == 0)
-	    {
-	      fprintf (stderr,
-		       ("test1: [%zu], unexpected return value from "
-			"backtrace_syminfo %d\n"),
-		       j, i);
-	      data.failed = 1;
-	    }
-	  else if (symdata.name == NULL)
-	    {
-	      fprintf (stderr, "test1: [%zu]: syminfo did not find name\n", j);
-	      data.failed = 1;
-	    }
-	  else
-	    all[j].function = strdup (symdata.name);
-	}
+          i = backtrace_syminfo (state, addrs[j], callback_three,
+                                 error_callback_three, &symdata);
+          if (i == 0)
+            {
+              fprintf (stderr,
+                       ("test1: [%zu], unexpected return value from "
+                        "backtrace_syminfo %d\n"),
+                       j, i);
+              data.failed = 1;
+            }
+          else if (symdata.name == NULL)
+            {
+              fprintf (stderr, "test1: [%zu]: syminfo did not find name\n", j);
+              data.failed = 1;
+            }
+          else
+            all[j].function = strdup (symdata.name);
+        }
     }
 
   if (data.index > 0)
     {
       if (all[0].function == NULL)
-	{
-	  fprintf (stderr, "test1: [0]: missing function name\n");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [0]: missing function name\n");
+          data.failed = 1;
+        }
       else if (strcmp (all[0].function, "f3") != 0)
-	{
-	  fprintf (stderr, "test1: [0]: got %s expected %s\n",
-		   all[0].function, "f3");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [0]: got %s expected %s\n", all[0].function,
+                   "f3");
+          data.failed = 1;
+        }
     }
 
   if (data.index > 1)
     {
       if (all[1].function == NULL)
-	{
-	  fprintf (stderr, "test1: [1]: missing function name\n");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [1]: missing function name\n");
+          data.failed = 1;
+        }
       else if (strcmp (all[1].function, "f2") != 0)
-	{
-	  fprintf (stderr, "test1: [1]: got %s expected %s\n",
-		   all[0].function, "f2");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [1]: got %s expected %s\n", all[0].function,
+                   "f2");
+          data.failed = 1;
+        }
     }
 
   if (data.index > 2)
     {
       if (all[2].function == NULL)
-	{
-	  fprintf (stderr, "test1: [2]: missing function name\n");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [2]: missing function name\n");
+          data.failed = 1;
+        }
       else if (strcmp (all[2].function, "test1") != 0)
-	{
-	  fprintf (stderr, "test1: [2]: got %s expected %s\n",
-		   all[0].function, "test1");
-	  data.failed = 1;
-	}
+        {
+          fprintf (stderr, "test1: [2]: got %s expected %s\n", all[0].function,
+                   "test1");
+          data.failed = 1;
+        }
     }
 
   printf ("%s: backtrace_full noinline\n", data.failed ? "FAIL" : "PASS");
@@ -252,65 +252,65 @@ f23 (int f1line __attribute__ ((unused)), int f2line __attribute__ ((unused)))
       int j;
 
       for (j = 0; j < 3; ++j)
-	{
-	  struct symdata symdata;
+        {
+          struct symdata symdata;
 
-	  symdata.name = NULL;
-	  symdata.val = 0;
-	  symdata.size = 0;
-	  symdata.failed = 0;
+          symdata.name = NULL;
+          symdata.val = 0;
+          symdata.size = 0;
+          symdata.failed = 0;
 
-	  i = backtrace_syminfo (state, addrs[j], callback_three,
-				 error_callback_three, &symdata);
-	  if (i == 0)
-	    {
-	      fprintf (stderr,
-		       ("test3: [%d]: unexpected return value "
-			"from backtrace_syminfo %d\n"),
-		       j, i);
-	      symdata.failed = 1;
-	    }
+          i = backtrace_syminfo (state, addrs[j], callback_three,
+                                 error_callback_three, &symdata);
+          if (i == 0)
+            {
+              fprintf (stderr,
+                       ("test3: [%d]: unexpected return value "
+                        "from backtrace_syminfo %d\n"),
+                       j, i);
+              symdata.failed = 1;
+            }
 
-	  if (!symdata.failed)
-	    {
-	      const char *expected;
+          if (!symdata.failed)
+            {
+              const char *expected;
 
-	      switch (j)
-		{
-		case 0:
-		  expected = "f23";
-		  break;
-		case 1:
-		  expected = "f22";
-		  break;
-		case 2:
-		  expected = "test3";
-		  break;
-		default:
-		  assert (0);
-		}
+              switch (j)
+                {
+                case 0:
+                  expected = "f23";
+                  break;
+                case 1:
+                  expected = "f22";
+                  break;
+                case 2:
+                  expected = "test3";
+                  break;
+                default:
+                  assert (0);
+                }
 
-	      if (symdata.name == NULL)
-		{
-		  fprintf (stderr, "test3: [%d]: NULL syminfo name\n", j);
-		  symdata.failed = 1;
-		}
-	      /* Use strncmp, not strcmp, because GCC might create a
-		 clone.  */
-	      else if (strncmp (symdata.name, expected, strlen (expected))
-		       != 0)
-		{
-		  fprintf (stderr,
-			   ("test3: [%d]: unexpected syminfo name "
-			    "got %s expected %s\n"),
-			   j, symdata.name, expected);
-		  symdata.failed = 1;
-		}
-	    }
+              if (symdata.name == NULL)
+                {
+                  fprintf (stderr, "test3: [%d]: NULL syminfo name\n", j);
+                  symdata.failed = 1;
+                }
+              /* Use strncmp, not strcmp, because GCC might create a
+                 clone.  */
+              else if (strncmp (symdata.name, expected, strlen (expected))
+                       != 0)
+                {
+                  fprintf (stderr,
+                           ("test3: [%d]: unexpected syminfo name "
+                            "got %s expected %s\n"),
+                           j, symdata.name, expected);
+                  symdata.failed = 1;
+                }
+            }
 
-	  if (symdata.failed)
-	    data.failed = 1;
-	}
+          if (symdata.failed)
+            data.failed = 1;
+        }
     }
 
   printf ("%s: backtrace_simple noinline\n", data.failed ? "FAIL" : "PASS");
@@ -330,7 +330,7 @@ test5 (void)
 {
   struct symdata symdata;
   int i;
-  uintptr_t addr = (uintptr_t) &global;
+  uintptr_t addr = (uintptr_t)&global;
 
   if (sizeof (global) > 1)
     addr += 1;
@@ -340,51 +340,49 @@ test5 (void)
   symdata.size = 0;
   symdata.failed = 0;
 
-  i = backtrace_syminfo (state, addr, callback_three,
-			 error_callback_three, &symdata);
+  i = backtrace_syminfo (state, addr, callback_three, error_callback_three,
+                         &symdata);
   if (i == 0)
     {
       fprintf (stderr,
-	       "test5: unexpected return value from backtrace_syminfo %d\n",
-	       i);
+               "test5: unexpected return value from backtrace_syminfo %d\n",
+               i);
       symdata.failed = 1;
     }
 
   if (!symdata.failed)
     {
       if (symdata.name == NULL)
-	{
-	  fprintf (stderr, "test5: NULL syminfo name\n");
-	  symdata.failed = 1;
-	}
+        {
+          fprintf (stderr, "test5: NULL syminfo name\n");
+          symdata.failed = 1;
+        }
       else if (!(strncmp (symdata.name, "global", 6) == 0
-		 && (symdata.name[6] == '\0'|| symdata.name[6] == '.')))
-	{
-	  fprintf (stderr,
-		   "test5: unexpected syminfo name got %s expected %s\n",
-		   symdata.name, "global");
-	  symdata.failed = 1;
-	}
-      else if (symdata.val != (uintptr_t) &global)
-	{
-	  fprintf (stderr,
-		   "test5: unexpected syminfo value got %lx expected %lx\n",
-		   (unsigned long) symdata.val,
-		   (unsigned long) (uintptr_t) &global);
-	  symdata.failed = 1;
-	}
+                 && (symdata.name[6] == '\0' || symdata.name[6] == '.')))
+        {
+          fprintf (stderr,
+                   "test5: unexpected syminfo name got %s expected %s\n",
+                   symdata.name, "global");
+          symdata.failed = 1;
+        }
+      else if (symdata.val != (uintptr_t)&global)
+        {
+          fprintf (
+              stderr, "test5: unexpected syminfo value got %lx expected %lx\n",
+              (unsigned long)symdata.val, (unsigned long)(uintptr_t)&global);
+          symdata.failed = 1;
+        }
       else if (symdata.size != sizeof (global) && symdata.size != 0)
-	{
-	  fprintf (stderr,
-		   "test5: unexpected syminfo size got %lx expected %lx\n",
-		   (unsigned long) symdata.size,
-		   (unsigned long) sizeof (global));
-	  symdata.failed = 1;
-	}
+        {
+          fprintf (
+              stderr, "test5: unexpected syminfo size got %lx expected %lx\n",
+              (unsigned long)symdata.size, (unsigned long)sizeof (global));
+          symdata.failed = 1;
+        }
     }
 
   printf ("%s: backtrace_syminfo variable\n",
-	  symdata.failed ? "FAIL" : "PASS");
+          symdata.failed ? "FAIL" : "PASS");
 
   if (symdata.failed)
     ++failures;
@@ -396,7 +394,7 @@ int
 main (int argc ATTRIBUTE_UNUSED, char **argv)
 {
   state = backtrace_create_state (argv[0], BACKTRACE_SUPPORTS_THREADS,
-				  error_callback_create, NULL);
+                                  error_callback_create, NULL);
 
 #if BACKTRACE_SUPPORTED
   test1 ();

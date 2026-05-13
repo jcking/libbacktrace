@@ -40,8 +40,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #include "filenames.h"
 
-#include "backtrace.h"
 #include "backtrace-supported.h"
+#include "backtrace.h"
 
 #include "testlib.h"
 
@@ -49,7 +49,7 @@ int
 main (int argc ATTRIBUTE_UNUSED, char **argv)
 {
   state = backtrace_create_state (argv[0], BACKTRACE_SUPPORTS_THREADS,
-				  error_callback_create, NULL);
+                                  error_callback_create, NULL);
 
   exit (failures ? EXIT_FAILURE : EXIT_SUCCESS);
 }

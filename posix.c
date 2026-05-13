@@ -33,9 +33,9 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include "config.h"
 
 #include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "backtrace.h"
@@ -57,24 +57,24 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 int
 backtrace_open (const char *filename, backtrace_error_callback error_callback,
-		void *data, int *does_not_exist)
+                void *data, int *does_not_exist)
 {
   int descriptor;
 
   if (does_not_exist != NULL)
     *does_not_exist = 0;
 
-  descriptor = open (filename, (int) (O_RDONLY | O_BINARY | O_CLOEXEC));
+  descriptor = open (filename, (int)(O_RDONLY | O_BINARY | O_CLOEXEC));
   if (descriptor < 0)
     {
       /* If DOES_NOT_EXIST is not NULL, then don't call ERROR_CALLBACK
-	 if the file does not exist.  We treat lacking permission to
-	 open the file as the file not existing; this case arises when
-	 running the libgo syscall package tests as root.  */
+         if the file does not exist.  We treat lacking permission to
+         open the file as the file not existing; this case arises when
+         running the libgo syscall package tests as root.  */
       if (does_not_exist != NULL && (errno == ENOENT || errno == EACCES))
-	*does_not_exist = 1;
+        *does_not_exist = 1;
       else
-	error_callback (data, filename, errno);
+        error_callback (data, filename, errno);
       return -1;
     }
 
@@ -93,7 +93,7 @@ backtrace_open (const char *filename, backtrace_error_callback error_callback,
 
 int
 backtrace_close (int descriptor, backtrace_error_callback error_callback,
-		 void *data)
+                 void *data)
 {
   if (close (descriptor) < 0)
     {

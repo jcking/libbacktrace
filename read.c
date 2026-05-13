@@ -46,14 +46,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 int
 backtrace_get_view (struct backtrace_state *state, int descriptor,
-		    off_t offset, uint64_t size,
-		    backtrace_error_callback error_callback,
-		    void *data, struct backtrace_view *view)
+                    off_t offset, uint64_t size,
+                    backtrace_error_callback error_callback, void *data,
+                    struct backtrace_view *view)
 {
   uint64_t got;
   ssize_t r;
 
-  if ((uint64_t) (size_t) size != size)
+  if ((uint64_t)(size_t)size != size)
     {
       error_callback (data, "file size too large", 0);
       return 0;
@@ -76,14 +76,14 @@ backtrace_get_view (struct backtrace_state *state, int descriptor,
     {
       r = read (descriptor, view->base, size - got);
       if (r < 0)
-	{
-	  error_callback (data, "read", errno);
-	  free (view->base);
-	  return 0;
-	}
+        {
+          error_callback (data, "read", errno);
+          free (view->base);
+          return 0;
+        }
       if (r == 0)
-	break;
-      got += (uint64_t) r;
+        break;
+      got += (uint64_t)r;
     }
 
   if (got < size)
@@ -100,9 +100,8 @@ backtrace_get_view (struct backtrace_state *state, int descriptor,
 
 void
 backtrace_release_view (struct backtrace_state *state,
-			struct backtrace_view *view,
-			backtrace_error_callback error_callback,
-			void *data)
+                        struct backtrace_view *view,
+                        backtrace_error_callback error_callback, void *data)
 {
   backtrace_free (state, view->base, view->len, error_callback, data);
   view->data = NULL;

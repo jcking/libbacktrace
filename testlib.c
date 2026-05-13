@@ -61,7 +61,7 @@ base (const char *p)
   for (s = p; *s != '\0'; ++s)
     {
       if (IS_DIR_SEPARATOR (*s))
-	last = s + 1;
+        last = s + 1;
     }
   return last != NULL ? last : p;
 }
@@ -76,27 +76,27 @@ check (const char *name, int index, const struct info *all, int want_lineno,
     return;
   if (all[index].filename == NULL || all[index].function == NULL)
     {
-      fprintf (stderr, "%s: [%d]: missing file name or function name\n",
-	       name, index);
+      fprintf (stderr, "%s: [%d]: missing file name or function name\n", name,
+               index);
       *failed = 1;
       return;
     }
   if (strcmp (base (all[index].filename), want_file) != 0)
     {
       fprintf (stderr, "%s: [%d]: got %s expected %s\n", name, index,
-	       all[index].filename, want_file);
+               all[index].filename, want_file);
       *failed = 1;
     }
   if (all[index].lineno != want_lineno)
     {
       fprintf (stderr, "%s: [%d]: got %d expected %d\n", name, index,
-	       all[index].lineno, want_lineno);
+               all[index].lineno, want_lineno);
       *failed = 1;
     }
   if (strcmp (all[index].function, want_function) != 0)
     {
       fprintf (stderr, "%s: [%d]: got %s expected %s\n", name, index,
-	       all[index].function, want_function);
+               all[index].function, want_function);
       *failed = 1;
     }
 }
@@ -104,10 +104,10 @@ check (const char *name, int index, const struct info *all, int want_lineno,
 /* The backtrace callback function.  */
 
 int
-callback_one (void *vdata, uintptr_t pc ATTRIBUTE_UNUSED,
-	      const char *filename, int lineno, const char *function)
+callback_one (void *vdata, uintptr_t pc ATTRIBUTE_UNUSED, const char *filename,
+              int lineno, const char *function)
 {
-  struct bdata *data = (struct bdata *) vdata;
+  struct bdata *data = (struct bdata *)vdata;
   struct info *p;
 
   if (data->index >= data->max)
@@ -143,7 +143,7 @@ callback_one (void *vdata, uintptr_t pc ATTRIBUTE_UNUSED,
 void
 error_callback_one (void *vdata, const char *msg, int errnum)
 {
-  struct bdata *data = (struct bdata *) vdata;
+  struct bdata *data = (struct bdata *)vdata;
 
   fprintf (stderr, "%s", msg);
   if (errnum > 0)
@@ -157,7 +157,7 @@ error_callback_one (void *vdata, const char *msg, int errnum)
 int
 callback_two (void *vdata, uintptr_t pc)
 {
-  struct sdata *data = (struct sdata *) vdata;
+  struct sdata *data = (struct sdata *)vdata;
 
   if (data->index >= data->max)
     {
@@ -177,7 +177,7 @@ callback_two (void *vdata, uintptr_t pc)
 void
 error_callback_two (void *vdata, const char *msg, int errnum)
 {
-  struct sdata *data = (struct sdata *) vdata;
+  struct sdata *data = (struct sdata *)vdata;
 
   fprintf (stderr, "%s", msg);
   if (errnum > 0)
@@ -190,10 +190,9 @@ error_callback_two (void *vdata, const char *msg, int errnum)
 
 void
 callback_three (void *vdata, uintptr_t pc ATTRIBUTE_UNUSED,
-		const char *symname, uintptr_t symval,
-		uintptr_t symsize)
+                const char *symname, uintptr_t symval, uintptr_t symsize)
 {
-  struct symdata *data = (struct symdata *) vdata;
+  struct symdata *data = (struct symdata *)vdata;
 
   if (symname == NULL)
     data->name = NULL;
@@ -211,7 +210,7 @@ callback_three (void *vdata, uintptr_t pc ATTRIBUTE_UNUSED,
 void
 error_callback_three (void *vdata, const char *msg, int errnum)
 {
-  struct symdata *data = (struct symdata *) vdata;
+  struct symdata *data = (struct symdata *)vdata;
 
   fprintf (stderr, "%s", msg);
   if (errnum > 0)

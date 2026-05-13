@@ -32,8 +32,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #include "config.h"
 
-#include "unwind.h"
 #include "backtrace.h"
+#include "unwind.h"
 
 /* The simple_backtrace routine.  */
 
@@ -61,7 +61,7 @@ struct backtrace_simple_data
 static _Unwind_Reason_Code
 simple_unwind (struct _Unwind_Context *context, void *vdata)
 {
-  struct backtrace_simple_data *bdata = (struct backtrace_simple_data *) vdata;
+  struct backtrace_simple_data *bdata = (struct backtrace_simple_data *)vdata;
   uintptr_t pc;
   int ip_before_insn = 0;
 
@@ -90,10 +90,10 @@ simple_unwind (struct _Unwind_Context *context, void *vdata)
 
 /* Get a simple stack backtrace.  */
 
-int __attribute__((noinline))
+int __attribute__ ((noinline))
 backtrace_simple (struct backtrace_state *state, int skip,
-		  backtrace_simple_callback callback,
-		  backtrace_error_callback error_callback, void *data)
+                  backtrace_simple_callback callback,
+                  backtrace_error_callback error_callback, void *data)
 {
   struct backtrace_simple_data bdata;
 

@@ -58,7 +58,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #if BACKTRACE_XCOFF_SIZE == 32
 
-typedef struct {
+typedef struct
+{
   uint16_t f_magic;
   uint16_t f_nscns;
   uint32_t f_timdat;
@@ -68,11 +69,12 @@ typedef struct {
   uint16_t f_flags;
 } b_xcoff_filhdr;
 
-#define XCOFF_MAGIC	0737
+#define XCOFF_MAGIC 0737
 
 #else /* BACKTRACE_XCOFF_SIZE != 32 */
 
-typedef struct {
+typedef struct
+{
   uint16_t f_magic;
   uint16_t f_nscns;
   uint32_t f_timdat;
@@ -82,17 +84,18 @@ typedef struct {
   uint32_t f_nsyms;
 } b_xcoff_filhdr;
 
-#define XCOFF_MAGIC	0767
+#define XCOFF_MAGIC 0767
 
 #endif /* BACKTRACE_XCOFF_SIZE != 32 */
 
-#define F_SHROBJ	0x2000	/* File is a shared object.  */
+#define F_SHROBJ 0x2000 /* File is a shared object.  */
 
 /* XCOFF section header.  */
 
 #if BACKTRACE_XCOFF_SIZE == 32
 
-typedef struct {
+typedef struct
+{
   char s_name[8];
   uint32_t s_paddr;
   uint32_t s_vaddr;
@@ -105,11 +108,12 @@ typedef struct {
   uint32_t s_flags;
 } b_xcoff_scnhdr;
 
-#define _OVERFLOW_MARKER	65535
+#define _OVERFLOW_MARKER 65535
 
 #else /* BACKTRACE_XCOFF_SIZE != 32 */
 
-typedef struct {
+typedef struct
+{
   char name[8];
   uint64_t s_paddr;
   uint64_t s_vaddr;
@@ -124,109 +128,121 @@ typedef struct {
 
 #endif /* BACKTRACE_XCOFF_SIZE != 32 */
 
-#define STYP_DWARF	0x10	/* DWARF debugging section.  */
-#define STYP_TEXT	0x20	/* Executable text (code) section.  */
-#define STYP_OVRFLO	0x8000	/* Line-number field overflow section.  */
+#define STYP_DWARF 0x10    /* DWARF debugging section.  */
+#define STYP_TEXT 0x20     /* Executable text (code) section.  */
+#define STYP_OVRFLO 0x8000 /* Line-number field overflow section.  */
 
-#define SSUBTYP_DWINFO	0x10000	/* DWARF info section.  */
-#define SSUBTYP_DWLINE	0x20000	/* DWARF line-number section.  */
-#define SSUBTYP_DWARNGE	0x50000	/* DWARF aranges section.  */
-#define SSUBTYP_DWABREV	0x60000	/* DWARF abbreviation section.  */
-#define SSUBTYP_DWSTR	0x70000	/* DWARF strings section.  */
-#define SSUBTYP_DWRNGES	0x80000	/* DWARF ranges section.  */
+#define SSUBTYP_DWINFO 0x10000  /* DWARF info section.  */
+#define SSUBTYP_DWLINE 0x20000  /* DWARF line-number section.  */
+#define SSUBTYP_DWARNGE 0x50000 /* DWARF aranges section.  */
+#define SSUBTYP_DWABREV 0x60000 /* DWARF abbreviation section.  */
+#define SSUBTYP_DWSTR 0x70000   /* DWARF strings section.  */
+#define SSUBTYP_DWRNGES 0x80000 /* DWARF ranges section.  */
 
 /* XCOFF symbol.  */
 
-#define SYMNMLEN	8
+#define SYMNMLEN 8
 
 #if BACKTRACE_XCOFF_SIZE == 32
 
-typedef struct {
-  union {
+typedef struct
+{
+  union
+  {
     char _name[SYMNMLEN];
-    struct {
+    struct
+    {
       uint32_t _zeroes;
       uint32_t _offset;
     } _s;
   } _u;
-#define n_name		_u._name
-#define n_zeroes	_u._s._zeroes
-#define n_offset_	_u._s._offset
+#define n_name _u._name
+#define n_zeroes _u._s._zeroes
+#define n_offset_ _u._s._offset
 
   uint32_t n_value;
-  int16_t  n_scnum;
+  int16_t n_scnum;
   uint16_t n_type;
-  uint8_t  n_sclass;
-  uint8_t  n_numaux;
+  uint8_t n_sclass;
+  uint8_t n_numaux;
 } __attribute__ ((packed)) b_xcoff_syment;
 
 #else /* BACKTRACE_XCOFF_SIZE != 32 */
 
-typedef struct {
+typedef struct
+{
   uint64_t n_value;
   uint32_t n_offset_;
-  int16_t  n_scnum;
+  int16_t n_scnum;
   uint16_t n_type;
-  uint8_t  n_sclass;
-  uint8_t  n_numaux;
+  uint8_t n_sclass;
+  uint8_t n_numaux;
 } __attribute__ ((packed)) b_xcoff_syment;
 
 #endif /* BACKTRACE_XCOFF_SIZE != 32 */
 
-#define SYMESZ	18
+#define SYMESZ 18
 
-#define C_EXT		2	/* External symbol.  */
-#define C_FCN		101	/* Beginning or end of function.  */
-#define C_FILE		103	/* Source file name.  */
-#define C_HIDEXT	107	/* Unnamed external symbol.  */
-#define C_BINCL		108	/* Beginning of include file.  */
-#define C_EINCL		109	/* End of include file.  */
-#define C_WEAKEXT	111	/* Weak external symbol.  */
+#define C_EXT 2       /* External symbol.  */
+#define C_FCN 101     /* Beginning or end of function.  */
+#define C_FILE 103    /* Source file name.  */
+#define C_HIDEXT 107  /* Unnamed external symbol.  */
+#define C_BINCL 108   /* Beginning of include file.  */
+#define C_EINCL 109   /* End of include file.  */
+#define C_WEAKEXT 111 /* Weak external symbol.  */
 
-#define ISFCN(x)	((x) & 0x0020)
+#define ISFCN(x) ((x) & 0x0020)
 
 /* XCOFF AUX entry.  */
 
-#define AUXESZ		18
-#define FILNMLEN	14
+#define AUXESZ 18
+#define FILNMLEN 14
 
-typedef union {
+typedef union
+{
 #if BACKTRACE_XCOFF_SIZE == 32
-  struct {
+  struct
+  {
     uint16_t pad;
     uint16_t x_lnnohi;
     uint16_t x_lnno;
   } x_block;
 #else
-  struct {
+  struct
+  {
     uint32_t x_lnno;
   } x_block;
 #endif
-  union {
+  union
+  {
     char x_fname[FILNMLEN];
-    struct {
+    struct
+    {
       uint32_t x_zeroes;
       uint32_t x_offset;
-      char     pad[FILNMLEN-8];
-      uint8_t  x_ftype;
+      char pad[FILNMLEN - 8];
+      uint8_t x_ftype;
     } _x;
   } x_file;
 #if BACKTRACE_XCOFF_SIZE == 32
-  struct {
+  struct
+  {
     uint32_t x_exptr;
     uint32_t x_fsize;
     uint32_t x_lnnoptr;
     uint32_t x_endndx;
   } x_fcn;
 #else
-  struct {
+  struct
+  {
     uint64_t x_lnnoptr;
     uint32_t x_fsize;
     uint32_t x_endndx;
   } x_fcn;
 #endif
-  struct {
-    uint8_t pad[AUXESZ-1];
+  struct
+  {
+    uint8_t pad[AUXESZ - 1];
     uint8_t x_auxtype;
   } x_auxtype;
 } __attribute__ ((packed)) b_xcoff_auxent;
@@ -235,63 +251,68 @@ typedef union {
 
 #if BACKTRACE_XCOFF_SIZE == 32
 
-typedef struct {
-  union {
+typedef struct
+{
+  union
+  {
     uint32_t l_symndx;
     uint32_t l_paddr;
   } l_addr;
   uint16_t l_lnno;
 } b_xcoff_lineno;
 
-#define LINESZ	6
+#define LINESZ 6
 
 #else /* BACKTRACE_XCOFF_SIZE != 32 */
 
-typedef struct {
-  union {
+typedef struct
+{
+  union
+  {
     uint32_t l_symndx;
     uint64_t l_paddr;
   } l_addr;
   uint32_t l_lnno;
 } b_xcoff_lineno;
 
-#define LINESZ	12
+#define LINESZ 12
 
 #endif /* BACKTRACE_XCOFF_SIZE != 32 */
 
 #if BACKTRACE_XCOFF_SIZE == 32
-#define XCOFF_AIX_TEXTBASE	0x10000000u
+#define XCOFF_AIX_TEXTBASE 0x10000000u
 #else
-#define XCOFF_AIX_TEXTBASE	0x100000000ul
+#define XCOFF_AIX_TEXTBASE 0x100000000ul
 #endif
 
 /* AIX big archive fixed-length header.  */
 
-#define AIAMAGBIG	"<bigaf>\n"
+#define AIAMAGBIG "<bigaf>\n"
 
-typedef struct {
-  char fl_magic[8];	/* Archive magic string.  */
-  char fl_memoff[20];	/* Offset to member table.  */
-  char fl_gstoff[20];	/* Offset to global symbol table.  */
-  char fl_gst64off[20];	/* Offset to global symbol table for 64-bit objects.  */
-  char fl_fstmoff[20];	/* Offset to first archive member.  */
-  char fl_freeoff[20];	/* Offset to first member on free list.  */
+typedef struct
+{
+  char fl_magic[8];     /* Archive magic string.  */
+  char fl_memoff[20];   /* Offset to member table.  */
+  char fl_gstoff[20];   /* Offset to global symbol table.  */
+  char fl_gst64off[20]; /* Offset to global symbol table for 64-bit objects. */
+  char fl_fstmoff[20];  /* Offset to first archive member.  */
+  char fl_freeoff[20];  /* Offset to first member on free list.  */
 } b_ar_fl_hdr;
 
 /* AIX big archive file member header.  */
 
-typedef struct {
-  char ar_size[20];	/* File member size - decimal.  */
-  char ar_nxtmem[20];	/* Next member offset - decimal.  */
-  char ar_prvmem[20];	/* Previous member offset - decimal.  */
-  char ar_date[12];	/* File member date - decimal.  */
-  char ar_uid[12];	/* File member userid - decimal.  */
-  char ar_gid[12];	/* File member group id - decimal.  */
-  char ar_mode[12];	/* File member mode - octal.  */
-  char ar_namlen[4];	/* File member name length - decimal.  */
-  char ar_name[2];	/* Start of member name.  */
+typedef struct
+{
+  char ar_size[20];   /* File member size - decimal.  */
+  char ar_nxtmem[20]; /* Next member offset - decimal.  */
+  char ar_prvmem[20]; /* Previous member offset - decimal.  */
+  char ar_date[12];   /* File member date - decimal.  */
+  char ar_uid[12];    /* File member userid - decimal.  */
+  char ar_gid[12];    /* File member group id - decimal.  */
+  char ar_mode[12];   /* File member mode - octal.  */
+  char ar_namlen[4];  /* File member name length - decimal.  */
+  char ar_name[2];    /* Start of member name.  */
 } b_ar_hdr;
-
 
 /* Information we keep for an XCOFF symbol.  */
 
@@ -404,9 +425,9 @@ struct dwsect_info
 
 static int
 xcoff_nodebug (struct backtrace_state *state ATTRIBUTE_UNUSED,
-	       uintptr_t pc ATTRIBUTE_UNUSED,
-	       backtrace_full_callback callback ATTRIBUTE_UNUSED,
-	       backtrace_error_callback error_callback, void *data)
+               uintptr_t pc ATTRIBUTE_UNUSED,
+               backtrace_full_callback callback ATTRIBUTE_UNUSED,
+               backtrace_error_callback error_callback, void *data)
 {
   error_callback (data, "no debug info in XCOFF executable", -1);
   return 0;
@@ -417,9 +438,9 @@ xcoff_nodebug (struct backtrace_state *state ATTRIBUTE_UNUSED,
 
 static void
 xcoff_nosyms (struct backtrace_state *state ATTRIBUTE_UNUSED,
-	      uintptr_t addr ATTRIBUTE_UNUSED,
-	      backtrace_syminfo_callback callback ATTRIBUTE_UNUSED,
-	      backtrace_error_callback error_callback, void *data)
+              uintptr_t addr ATTRIBUTE_UNUSED,
+              backtrace_syminfo_callback callback ATTRIBUTE_UNUSED,
+              backtrace_error_callback error_callback, void *data)
 {
   error_callback (data, "no symbol table in XCOFF executable", -1);
 }
@@ -429,8 +450,8 @@ xcoff_nosyms (struct backtrace_state *state ATTRIBUTE_UNUSED,
 static int
 xcoff_symbol_compare (const void *v1, const void *v2)
 {
-  const struct xcoff_symbol *e1 = (const struct xcoff_symbol *) v1;
-  const struct xcoff_symbol *e2 = (const struct xcoff_symbol *) v2;
+  const struct xcoff_symbol *e1 = (const struct xcoff_symbol *)v1;
+  const struct xcoff_symbol *e2 = (const struct xcoff_symbol *)v2;
 
   if (e1->address < e2->address)
     return -1;
@@ -445,15 +466,15 @@ xcoff_symbol_compare (const void *v1, const void *v2)
 static int
 xcoff_symbol_search (const void *vkey, const void *ventry)
 {
-  const uintptr_t *key = (const uintptr_t *) vkey;
-  const struct xcoff_symbol *entry = (const struct xcoff_symbol *) ventry;
+  const uintptr_t *key = (const uintptr_t *)vkey;
+  const struct xcoff_symbol *entry = (const struct xcoff_symbol *)ventry;
   uintptr_t addr;
 
   addr = *key;
   if (addr < entry->address)
     return -1;
   else if ((entry->size == 0 && addr > entry->address)
-	   || (entry->size > 0 && addr >= entry->address + entry->size))
+           || (entry->size > 0 && addr >= entry->address + entry->size))
     return 1;
   else
     return 0;
@@ -463,41 +484,40 @@ xcoff_symbol_search (const void *vkey, const void *ventry)
 
 static void
 xcoff_add_syminfo_data (struct backtrace_state *state,
-			struct xcoff_syminfo_data *xdata)
+                        struct xcoff_syminfo_data *xdata)
 {
   if (!state->threaded)
     {
       struct xcoff_syminfo_data **pp;
 
-      for (pp = (struct xcoff_syminfo_data **) (void *) &state->syminfo_data;
-	   *pp != NULL;
-	   pp = &(*pp)->next)
-	;
+      for (pp = (struct xcoff_syminfo_data **)(void *)&state->syminfo_data;
+           *pp != NULL; pp = &(*pp)->next)
+        ;
       *pp = xdata;
     }
   else
     {
       while (1)
-	{
-	  struct xcoff_syminfo_data **pp;
+        {
+          struct xcoff_syminfo_data **pp;
 
-	  pp = (struct xcoff_syminfo_data **) (void *) &state->syminfo_data;
+          pp = (struct xcoff_syminfo_data **)(void *)&state->syminfo_data;
 
-	  while (1)
-	    {
-	      struct xcoff_syminfo_data *p;
+          while (1)
+            {
+              struct xcoff_syminfo_data *p;
 
-	      p = backtrace_atomic_load_pointer (pp);
+              p = backtrace_atomic_load_pointer (pp);
 
-	      if (p == NULL)
-		break;
+              if (p == NULL)
+                break;
 
-	      pp = &p->next;
-	    }
+              pp = &p->next;
+            }
 
-	  if (__sync_bool_compare_and_swap (pp, NULL, xdata))
-	    break;
-	}
+          if (__sync_bool_compare_and_swap (pp, NULL, xdata))
+            break;
+        }
     }
 }
 
@@ -505,9 +525,9 @@ xcoff_add_syminfo_data (struct backtrace_state *state,
 
 static void
 xcoff_syminfo (struct backtrace_state *state ATTRIBUTE_UNUSED, uintptr_t addr,
-	       backtrace_syminfo_callback callback,
-	       backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
-	       void *data)
+               backtrace_syminfo_callback callback,
+               backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
+               void *data)
 {
   struct xcoff_syminfo_data *edata;
   struct xcoff_symbol *sym = NULL;
@@ -515,36 +535,35 @@ xcoff_syminfo (struct backtrace_state *state ATTRIBUTE_UNUSED, uintptr_t addr,
 
   if (!state->threaded)
     {
-      for (edata = (struct xcoff_syminfo_data *) state->syminfo_data;
-	   edata != NULL;
-	   edata = edata->next)
-	{
-	  sym = ((struct xcoff_symbol *)
-		 bsearch (&addr, edata->symbols, edata->count,
-			  sizeof (struct xcoff_symbol), xcoff_symbol_search));
-	  if (sym != NULL)
-	    break;
-	}
+      for (edata = (struct xcoff_syminfo_data *)state->syminfo_data;
+           edata != NULL; edata = edata->next)
+        {
+          sym = ((struct xcoff_symbol *)bsearch (
+              &addr, edata->symbols, edata->count,
+              sizeof (struct xcoff_symbol), xcoff_symbol_search));
+          if (sym != NULL)
+            break;
+        }
     }
   else
     {
       struct xcoff_syminfo_data **pp;
 
-      pp = (struct xcoff_syminfo_data **) (void *) &state->syminfo_data;
+      pp = (struct xcoff_syminfo_data **)(void *)&state->syminfo_data;
       while (1)
-	{
-	  edata = backtrace_atomic_load_pointer (pp);
-	  if (edata == NULL)
-	    break;
+        {
+          edata = backtrace_atomic_load_pointer (pp);
+          if (edata == NULL)
+            break;
 
-	  sym = ((struct xcoff_symbol *)
-		 bsearch (&addr, edata->symbols, edata->count,
-			  sizeof (struct xcoff_symbol), xcoff_symbol_search));
-	  if (sym != NULL)
-	    break;
+          sym = ((struct xcoff_symbol *)bsearch (
+              &addr, edata->symbols, edata->count,
+              sizeof (struct xcoff_symbol), xcoff_symbol_search));
+          if (sym != NULL)
+            break;
 
-	  pp = &edata->next;
-	}
+          pp = &edata->next;
+        }
     }
 
   if (sym == NULL)
@@ -554,7 +573,7 @@ xcoff_syminfo (struct backtrace_state *state ATTRIBUTE_UNUSED, uintptr_t addr,
       name = sym->name;
       /* AIX prepends a '.' to function entry points, remove it.  */
       if (name && *name == '.')
-	++name;
+        ++name;
       callback (data, addr, name, sym->address, sym->size);
     }
 }
@@ -562,14 +581,14 @@ xcoff_syminfo (struct backtrace_state *state ATTRIBUTE_UNUSED, uintptr_t addr,
 /* Return the name of an XCOFF symbol.  */
 
 static const char *
-xcoff_symname (const b_xcoff_syment *asym,
-	       const unsigned char *strtab, size_t strtab_size)
+xcoff_symname (const b_xcoff_syment *asym, const unsigned char *strtab,
+               size_t strtab_size)
 {
 #if BACKTRACE_XCOFF_SIZE == 32
   if (asym->n_zeroes != 0)
     {
       /* Make a copy as we will release the symtab view.  */
-      char name[SYMNMLEN+1];
+      char name[SYMNMLEN + 1];
       strncpy (name, asym->n_name, SYMNMLEN);
       name[SYMNMLEN] = '\0';
       return strdup (name);
@@ -579,18 +598,18 @@ xcoff_symname (const b_xcoff_syment *asym,
     return NULL; /* .debug */
   if (asym->n_offset_ >= strtab_size)
     return NULL;
-  return (const char *) strtab + asym->n_offset_;
+  return (const char *)strtab + asym->n_offset_;
 }
 
 /* Initialize the symbol table info for xcoff_syminfo.  */
 
 static int
 xcoff_initialize_syminfo (struct backtrace_state *state,
-			  struct libbacktrace_base_address base_address,
-			  const b_xcoff_syment *syms, size_t nsyms,
-			  const unsigned char *strtab, size_t strtab_size,
-			  backtrace_error_callback error_callback, void *data,
-			  struct xcoff_syminfo_data *sdata)
+                          struct libbacktrace_base_address base_address,
+                          const b_xcoff_syment *syms, size_t nsyms,
+                          const unsigned char *strtab, size_t strtab_size,
+                          backtrace_error_callback error_callback, void *data,
+                          struct xcoff_syminfo_data *sdata)
 {
   size_t xcoff_symbol_count;
   size_t xcoff_symbol_size;
@@ -604,17 +623,16 @@ xcoff_initialize_syminfo (struct backtrace_state *state,
     {
       const b_xcoff_syment *asym = &syms[i];
       if ((asym->n_sclass == C_EXT || asym->n_sclass == C_HIDEXT
-	    || asym->n_sclass == C_WEAKEXT)
-	  && ISFCN (asym->n_type) && asym->n_numaux > 0 && asym->n_scnum > 0)
-	++xcoff_symbol_count;
+           || asym->n_sclass == C_WEAKEXT)
+          && ISFCN (asym->n_type) && asym->n_numaux > 0 && asym->n_scnum > 0)
+        ++xcoff_symbol_count;
 
       i += asym->n_numaux;
     }
 
   xcoff_symbol_size = xcoff_symbol_count * sizeof (struct xcoff_symbol);
-  xcoff_symbols = ((struct xcoff_symbol *)
-		   backtrace_alloc (state, xcoff_symbol_size, error_callback,
-				    data));
+  xcoff_symbols = ((struct xcoff_symbol *)backtrace_alloc (
+      state, xcoff_symbol_size, error_callback, data));
   if (xcoff_symbols == NULL)
     return 0;
 
@@ -623,23 +641,23 @@ xcoff_initialize_syminfo (struct backtrace_state *state,
     {
       const b_xcoff_syment *asym = &syms[i];
       if ((asym->n_sclass == C_EXT || asym->n_sclass == C_HIDEXT
-	    || asym->n_sclass == C_WEAKEXT)
-	  && ISFCN (asym->n_type) && asym->n_numaux > 0 && asym->n_scnum > 0)
-	{
-	  const b_xcoff_auxent *aux = (const b_xcoff_auxent *) (asym + 1);
-	  xcoff_symbols[j].name = xcoff_symname (asym, strtab, strtab_size);
-	  xcoff_symbols[j].address =
-	    libbacktrace_add_base (asym->n_value, base_address);
-	  /* x_fsize will be 0 if there is no debug information.  */
-	  xcoff_symbols[j].size = aux->x_fcn.x_fsize;
-	  ++j;
-	}
+           || asym->n_sclass == C_WEAKEXT)
+          && ISFCN (asym->n_type) && asym->n_numaux > 0 && asym->n_scnum > 0)
+        {
+          const b_xcoff_auxent *aux = (const b_xcoff_auxent *)(asym + 1);
+          xcoff_symbols[j].name = xcoff_symname (asym, strtab, strtab_size);
+          xcoff_symbols[j].address
+              = libbacktrace_add_base (asym->n_value, base_address);
+          /* x_fsize will be 0 if there is no debug information.  */
+          xcoff_symbols[j].size = aux->x_fcn.x_fsize;
+          ++j;
+        }
 
       i += asym->n_numaux;
     }
 
   backtrace_qsort (xcoff_symbols, xcoff_symbol_count,
-		   sizeof (struct xcoff_symbol), xcoff_symbol_compare);
+                   sizeof (struct xcoff_symbol), xcoff_symbol_compare);
 
   sdata->next = NULL;
   sdata->symbols = xcoff_symbols;
@@ -653,8 +671,8 @@ xcoff_initialize_syminfo (struct backtrace_state *state,
 static int
 xcoff_func_compare (const void *v1, const void *v2)
 {
-  const struct xcoff_func *fn1 = (const struct xcoff_func *) v1;
-  const struct xcoff_func *fn2 = (const struct xcoff_func *) v2;
+  const struct xcoff_func *fn1 = (const struct xcoff_func *)v1;
+  const struct xcoff_func *fn2 = (const struct xcoff_func *)v2;
 
   if (fn1->pc < fn2->pc)
     return -1;
@@ -669,15 +687,15 @@ xcoff_func_compare (const void *v1, const void *v2)
 static int
 xcoff_func_search (const void *vkey, const void *ventry)
 {
-  const uintptr_t *key = (const uintptr_t *) vkey;
-  const struct xcoff_func *entry = (const struct xcoff_func *) ventry;
+  const uintptr_t *key = (const uintptr_t *)vkey;
+  const struct xcoff_func *entry = (const struct xcoff_func *)ventry;
   uintptr_t pc;
 
   pc = *key;
   if (pc < entry->pc)
     return -1;
   else if ((entry->size == 0 && pc > entry->pc)
-	   || (entry->size > 0 && pc >= entry->pc + entry->size))
+           || (entry->size > 0 && pc >= entry->pc + entry->size))
     return 1;
   else
     return 0;
@@ -688,8 +706,8 @@ xcoff_func_search (const void *vkey, const void *ventry)
 static int
 xcoff_incl_compare (const void *v1, const void *v2)
 {
-  const struct xcoff_incl *in1 = (const struct xcoff_incl *) v1;
-  const struct xcoff_incl *in2 = (const struct xcoff_incl *) v2;
+  const struct xcoff_incl *in1 = (const struct xcoff_incl *)v1;
+  const struct xcoff_incl *in2 = (const struct xcoff_incl *)v2;
 
   if (in1->begin < in2->begin)
     return -1;
@@ -704,8 +722,8 @@ xcoff_incl_compare (const void *v1, const void *v2)
 static int
 xcoff_incl_search (const void *vkey, const void *ventry)
 {
-  const uintptr_t *key = (const uintptr_t *) vkey;
-  const struct xcoff_incl *entry = (const struct xcoff_incl *) ventry;
+  const uintptr_t *key = (const uintptr_t *)vkey;
+  const struct xcoff_incl *entry = (const struct xcoff_incl *)ventry;
   uintptr_t lnno;
 
   lnno = *key;
@@ -724,10 +742,10 @@ xcoff_incl_search (const void *vkey, const void *ventry)
 
 static int
 xcoff_lookup_pc (struct backtrace_state *state ATTRIBUTE_UNUSED,
-		 struct xcoff_fileline_data *fdata, uintptr_t pc,
-		 backtrace_full_callback callback,
-		 backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
-		 void *data, int *found)
+                 struct xcoff_fileline_data *fdata, uintptr_t pc,
+                 backtrace_full_callback callback,
+                 backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
+                 void *data, int *found)
 {
   const struct xcoff_incl *incl, *bincl;
   const struct xcoff_func *fn;
@@ -744,9 +762,9 @@ xcoff_lookup_pc (struct backtrace_state *state ATTRIBUTE_UNUSED,
     ++pc;
 
   /* Find the function first.  */
-  fn = ((struct xcoff_func *)
-	bsearch (&pc, fdata->func_vec.vec.base, fdata->func_vec.count,
-		 sizeof (struct xcoff_func), xcoff_func_search));
+  fn = ((struct xcoff_func *)bsearch (
+      &pc, fdata->func_vec.vec.base, fdata->func_vec.count,
+      sizeof (struct xcoff_func), xcoff_func_search));
   if (fn == NULL)
     {
       *found = 0;
@@ -764,12 +782,12 @@ xcoff_lookup_pc (struct backtrace_state *state ATTRIBUTE_UNUSED,
   lineptr = fdata->linenos + (lnnoptr - fdata->lnnoptr0);
   while (lineptr + LINESZ <= fdata->linenos + fdata->linenos_size)
     {
-      lineno = (const b_xcoff_lineno *) lineptr;
+      lineno = (const b_xcoff_lineno *)lineptr;
       if (lineno->l_lnno == 0)
-	break;
+        break;
       if (pc <= libbacktrace_add_base (lineno->l_addr.l_paddr,
-				       fdata->base_address))
-	break;
+                                       fdata->base_address))
+        break;
       match = lnnoptr;
       lnno = lineno->l_lnno;
 
@@ -780,20 +798,18 @@ xcoff_lookup_pc (struct backtrace_state *state ATTRIBUTE_UNUSED,
   /* If part of a function other than the beginning comes from an
      include file, the line numbers are absolute, rather than
      relative to the beginning of the function.  */
-  incl = ((struct xcoff_incl *)
-	  bsearch (&match, fdata->incl_vec.vec.base,
-		   fdata->incl_vec.count, sizeof (struct xcoff_incl),
-		   xcoff_incl_search));
+  incl = ((struct xcoff_incl *)bsearch (
+      &match, fdata->incl_vec.vec.base, fdata->incl_vec.count,
+      sizeof (struct xcoff_incl), xcoff_incl_search));
   if (incl != NULL)
     {
-      bincl = ((struct xcoff_incl *)
-	       bsearch (&fn->lnnoptr, fdata->incl_vec.vec.base,
-			fdata->incl_vec.count, sizeof (struct xcoff_incl),
-			xcoff_incl_search));
+      bincl = ((struct xcoff_incl *)bsearch (
+          &fn->lnnoptr, fdata->incl_vec.vec.base, fdata->incl_vec.count,
+          sizeof (struct xcoff_incl), xcoff_incl_search));
       if (bincl != NULL && strcmp (incl->filename, bincl->filename) == 0)
-	{
-	  lnno += fn->lnno - 1;
-	}
+        {
+          lnno += fn->lnno - 1;
+        }
       filename = incl->filename;
     }
   else
@@ -813,8 +829,8 @@ xcoff_lookup_pc (struct backtrace_state *state ATTRIBUTE_UNUSED,
 
 static int
 xcoff_fileline (struct backtrace_state *state, uintptr_t pc,
-		backtrace_full_callback callback,
-		backtrace_error_callback error_callback, void *data)
+                backtrace_full_callback callback,
+                backtrace_error_callback error_callback, void *data)
 
 {
   struct xcoff_fileline_data *fdata;
@@ -823,34 +839,33 @@ xcoff_fileline (struct backtrace_state *state, uintptr_t pc,
 
   if (!state->threaded)
     {
-      for (fdata = (struct xcoff_fileline_data *) state->fileline_data;
-	   fdata != NULL;
-	   fdata = fdata->next)
-	{
-	  ret = xcoff_lookup_pc (state, fdata, pc, callback, error_callback,
-				 data, &found);
-	  if (ret != 0 || found)
-	    return ret;
-	}
+      for (fdata = (struct xcoff_fileline_data *)state->fileline_data;
+           fdata != NULL; fdata = fdata->next)
+        {
+          ret = xcoff_lookup_pc (state, fdata, pc, callback, error_callback,
+                                 data, &found);
+          if (ret != 0 || found)
+            return ret;
+        }
     }
   else
     {
       struct xcoff_fileline_data **pp;
 
-      pp = (struct xcoff_fileline_data **) (void *) &state->fileline_data;
+      pp = (struct xcoff_fileline_data **)(void *)&state->fileline_data;
       while (1)
-	{
-	  fdata = backtrace_atomic_load_pointer (pp);
-	  if (fdata == NULL)
-	    break;
+        {
+          fdata = backtrace_atomic_load_pointer (pp);
+          if (fdata == NULL)
+            break;
 
-	  ret = xcoff_lookup_pc (state, fdata, pc, callback, error_callback,
-				 data, &found);
-	  if (ret != 0 || found)
-	    return ret;
+          ret = xcoff_lookup_pc (state, fdata, pc, callback, error_callback,
+                                 data, &found);
+          if (ret != 0 || found)
+            return ret;
 
-	  pp = &fdata->next;
-	}
+          pp = &fdata->next;
+        }
     }
 
   /* FIXME: See if any libraries have been dlopen'ed.  */
@@ -862,13 +877,13 @@ xcoff_fileline (struct backtrace_state *state, uintptr_t pc,
 
 static int
 xcoff_initialize_fileline (struct backtrace_state *state,
-			   struct libbacktrace_base_address base_address,
-			   const b_xcoff_scnhdr *sects,
-			   const b_xcoff_syment *syms, size_t nsyms,
-			   const unsigned char *strtab, size_t strtab_size,
-			   const unsigned char *linenos, size_t linenos_size,
-			   uint64_t lnnoptr0,
-			   backtrace_error_callback error_callback, void *data)
+                           struct libbacktrace_base_address base_address,
+                           const b_xcoff_scnhdr *sects,
+                           const b_xcoff_syment *syms, size_t nsyms,
+                           const unsigned char *strtab, size_t strtab_size,
+                           const unsigned char *linenos, size_t linenos_size,
+                           uint64_t lnnoptr0,
+                           backtrace_error_callback error_callback, void *data)
 {
   struct xcoff_fileline_data *fdata;
   struct xcoff_func *fn;
@@ -882,9 +897,8 @@ xcoff_initialize_fileline (struct backtrace_state *state,
   uint32_t fsize;
   size_t i;
 
-  fdata = ((struct xcoff_fileline_data *)
-	   backtrace_alloc (state, sizeof (struct xcoff_fileline_data),
-			    error_callback, data));
+  fdata = ((struct xcoff_fileline_data *)backtrace_alloc (
+      state, sizeof (struct xcoff_fileline_data), error_callback, data));
   if (fdata == NULL)
     return 0;
   memset (fdata, 0, sizeof *fdata);
@@ -903,162 +917,157 @@ xcoff_initialize_fileline (struct backtrace_state *state,
       const b_xcoff_syment *asym = &syms[i];
 
       switch (asym->n_sclass)
-	{
-	  case C_BINCL:
-	    begin = asym->n_value;
-	    break;
+        {
+        case C_BINCL:
+          begin = asym->n_value;
+          break;
 
-	  case C_EINCL:
-	    if (begin == 0)
-	      break;
-	    end = asym->n_value;
-	    incl = ((struct xcoff_incl *)
-		    backtrace_vector_grow (state, sizeof (struct xcoff_incl),
-					   error_callback, data,
-					   &fdata->incl_vec.vec));
-	    if (incl != NULL)
-	      {
-		incl->filename = xcoff_symname (asym, strtab, strtab_size);
-		incl->begin = begin;
-		incl->end = end;
-		++fdata->incl_vec.count;
-	      }
-	    begin = 0;
-	    break;
+        case C_EINCL:
+          if (begin == 0)
+            break;
+          end = asym->n_value;
+          incl = ((struct xcoff_incl *)backtrace_vector_grow (
+              state, sizeof (struct xcoff_incl), error_callback, data,
+              &fdata->incl_vec.vec));
+          if (incl != NULL)
+            {
+              incl->filename = xcoff_symname (asym, strtab, strtab_size);
+              incl->begin = begin;
+              incl->end = end;
+              ++fdata->incl_vec.count;
+            }
+          begin = 0;
+          break;
 
-	  case C_FILE:
-	    filename = xcoff_symname (asym, strtab, strtab_size);
-	    if (filename == NULL)
-	      break;
+        case C_FILE:
+          filename = xcoff_symname (asym, strtab, strtab_size);
+          if (filename == NULL)
+            break;
 
-	    /* If the file auxiliary entry is not used, the symbol name is
-	       the name of the source file. If the file auxiliary entry is
-	       used, then the symbol name should be .file, and the first
-	       file auxiliary entry (by convention) contains the source
-	       file name.  */
+          /* If the file auxiliary entry is not used, the symbol name is
+             the name of the source file. If the file auxiliary entry is
+             used, then the symbol name should be .file, and the first
+             file auxiliary entry (by convention) contains the source
+             file name.  */
 
-	    if (asym->n_numaux > 0 && strcmp (filename, ".file") == 0)
-	      {
-		aux = (const b_xcoff_auxent *) (asym + 1);
-		if (aux->x_file._x.x_zeroes != 0)
-		  {
-		    /* Make a copy as we will release the symtab view.  */
-		    char name[FILNMLEN+1];
-		    strncpy (name, aux->x_file.x_fname, FILNMLEN);
-		    name[FILNMLEN] = '\0';
-		    filename = strdup (name);
-		  }
-		else if (aux->x_file._x.x_offset < strtab_size)
-		  filename = (const char *) strtab + aux->x_file._x.x_offset;
-		else
-		  filename = NULL;
-	      }
-	    break;
+          if (asym->n_numaux > 0 && strcmp (filename, ".file") == 0)
+            {
+              aux = (const b_xcoff_auxent *)(asym + 1);
+              if (aux->x_file._x.x_zeroes != 0)
+                {
+                  /* Make a copy as we will release the symtab view.  */
+                  char name[FILNMLEN + 1];
+                  strncpy (name, aux->x_file.x_fname, FILNMLEN);
+                  name[FILNMLEN] = '\0';
+                  filename = strdup (name);
+                }
+              else if (aux->x_file._x.x_offset < strtab_size)
+                filename = (const char *)strtab + aux->x_file._x.x_offset;
+              else
+                filename = NULL;
+            }
+          break;
 
-	  case C_EXT:
-	  case C_HIDEXT:
-	  case C_WEAKEXT:
-	    fsym = NULL;
-	    lnnoptr = 0;
-	    fsize = 0;
-	    if (!ISFCN (asym->n_type) || asym->n_numaux == 0
-		|| asym->n_scnum <= 0)
-	      break;
-	    if (filename == NULL)
-	      break;
-	    aux = (const b_xcoff_auxent *) (asym + 1);
-	    lnnoptr = aux->x_fcn.x_lnnoptr;
-	    if (lnnoptr < lnnoptr0
-		|| lnnoptr + LINESZ > lnnoptr0 + linenos_size)
-	      break;
-	    /* x_fsize will be 0 if there is no debug information.  */
-	    fsize = aux->x_fcn.x_fsize;
-	    fsym = asym;
-	    break;
+        case C_EXT:
+        case C_HIDEXT:
+        case C_WEAKEXT:
+          fsym = NULL;
+          lnnoptr = 0;
+          fsize = 0;
+          if (!ISFCN (asym->n_type) || asym->n_numaux == 0
+              || asym->n_scnum <= 0)
+            break;
+          if (filename == NULL)
+            break;
+          aux = (const b_xcoff_auxent *)(asym + 1);
+          lnnoptr = aux->x_fcn.x_lnnoptr;
+          if (lnnoptr < lnnoptr0 || lnnoptr + LINESZ > lnnoptr0 + linenos_size)
+            break;
+          /* x_fsize will be 0 if there is no debug information.  */
+          fsize = aux->x_fcn.x_fsize;
+          fsym = asym;
+          break;
 
-	  case C_FCN:
-	    if (asym->n_numaux == 0)
-	      break;
-	    if (fsym == NULL)
-	      break;
-	    name = xcoff_symname (asym, strtab, strtab_size);
-	    if (name == NULL || strcmp (name, ".bf") != 0)
-	      {
-		fsym = NULL;
-		break;
-	      }
-	    aux = (const b_xcoff_auxent *) (asym + 1);
+        case C_FCN:
+          if (asym->n_numaux == 0)
+            break;
+          if (fsym == NULL)
+            break;
+          name = xcoff_symname (asym, strtab, strtab_size);
+          if (name == NULL || strcmp (name, ".bf") != 0)
+            {
+              fsym = NULL;
+              break;
+            }
+          aux = (const b_xcoff_auxent *)(asym + 1);
 #if BACKTRACE_XCOFF_SIZE == 32
-	    lnno = (uint32_t) aux->x_block.x_lnnohi << 16
-		 | aux->x_block.x_lnno;
+          lnno = (uint32_t)aux->x_block.x_lnnohi << 16 | aux->x_block.x_lnno;
 #else
-	    lnno = aux->x_block.x_lnno;
+          lnno = aux->x_block.x_lnno;
 #endif
-	    fn = ((struct xcoff_func *)
-		  backtrace_vector_grow (state, sizeof (struct xcoff_func),
-					 error_callback, data,
-					 &fdata->func_vec.vec));
-	    if (fn == NULL)
-	      break;
-	    fn->name = xcoff_symname (fsym, strtab, strtab_size);
-	    fn->filename = filename;
-	    fn->sect_base = sects[fsym->n_scnum - 1].s_paddr;
-	    fn->pc = libbacktrace_add_base (fsym->n_value, base_address);
-	    fn->size = fsize;
-	    fn->lnno = lnno;
-	    fn->lnnoptr = lnnoptr;
-	    ++fdata->func_vec.count;
-	    break;
-	}
+          fn = ((struct xcoff_func *)backtrace_vector_grow (
+              state, sizeof (struct xcoff_func), error_callback, data,
+              &fdata->func_vec.vec));
+          if (fn == NULL)
+            break;
+          fn->name = xcoff_symname (fsym, strtab, strtab_size);
+          fn->filename = filename;
+          fn->sect_base = sects[fsym->n_scnum - 1].s_paddr;
+          fn->pc = libbacktrace_add_base (fsym->n_value, base_address);
+          fn->size = fsize;
+          fn->lnno = lnno;
+          fn->lnnoptr = lnnoptr;
+          ++fdata->func_vec.count;
+          break;
+        }
 
       i += asym->n_numaux;
     }
 
   if (!backtrace_vector_release (state, &fdata->func_vec.vec, error_callback,
-				 data))
+                                 data))
     goto fail;
   backtrace_qsort (fdata->func_vec.vec.base, fdata->func_vec.count,
-		   sizeof (struct xcoff_func), xcoff_func_compare);
+                   sizeof (struct xcoff_func), xcoff_func_compare);
 
   if (!backtrace_vector_release (state, &fdata->incl_vec.vec, error_callback,
-				 data))
+                                 data))
     goto fail;
   backtrace_qsort (fdata->incl_vec.vec.base, fdata->incl_vec.count,
-		   sizeof (struct xcoff_incl), xcoff_incl_compare);
+                   sizeof (struct xcoff_incl), xcoff_incl_compare);
 
   if (!state->threaded)
     {
       struct xcoff_fileline_data **pp;
 
-      for (pp = (struct xcoff_fileline_data **) (void *) &state->fileline_data;
-	   *pp != NULL;
-	   pp = &(*pp)->next)
-	;
+      for (pp = (struct xcoff_fileline_data **)(void *)&state->fileline_data;
+           *pp != NULL; pp = &(*pp)->next)
+        ;
       *pp = fdata;
     }
   else
     {
       while (1)
-	{
-	  struct xcoff_fileline_data **pp;
+        {
+          struct xcoff_fileline_data **pp;
 
-	  pp = (struct xcoff_fileline_data **) (void *) &state->fileline_data;
+          pp = (struct xcoff_fileline_data **)(void *)&state->fileline_data;
 
-	  while (1)
-	    {
-	      struct xcoff_fileline_data *p;
+          while (1)
+            {
+              struct xcoff_fileline_data *p;
 
-	      p = backtrace_atomic_load_pointer (pp);
+              p = backtrace_atomic_load_pointer (pp);
 
-	      if (p == NULL)
-		break;
+              if (p == NULL)
+                break;
 
-	      pp = &p->next;
-	    }
+              pp = &p->next;
+            }
 
-	  if (__sync_bool_compare_and_swap (pp, NULL, fdata))
-	    break;
-	}
+          if (__sync_bool_compare_and_swap (pp, NULL, fdata))
+            break;
+        }
     }
 
   return 1;
@@ -1072,9 +1081,9 @@ fail:
 
 static int
 xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
-	   struct libbacktrace_base_address base_address,
-	   backtrace_error_callback error_callback,
-	   void *data, fileline *fileline_fn, int *found_sym, int exe)
+           struct libbacktrace_base_address base_address,
+           backtrace_error_callback error_callback, void *data,
+           fileline *fileline_fn, int *found_sym, int exe)
 {
   struct backtrace_view fhdr_view;
   struct backtrace_view sects_view;
@@ -1115,7 +1124,7 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
 
   /* Map the XCOFF file header.  */
   if (!backtrace_get_view (state, descriptor, offset, sizeof (b_xcoff_filhdr),
-			   error_callback, data, &fhdr_view))
+                           error_callback, data, &fhdr_view))
     goto fail;
 
   memcpy (&fhdr, fhdr_view.data, sizeof fhdr);
@@ -1126,7 +1135,7 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
   if (!magic_ok)
     {
       if (exe)
-	error_callback (data, "executable file is not XCOFF", 0);
+        error_callback (data, "executable file is not XCOFF", 0);
       goto fail;
     }
 
@@ -1140,11 +1149,11 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
   sects_size = fhdr.f_nscns * sizeof (b_xcoff_scnhdr);
 
   if (!backtrace_get_view (state, descriptor,
-			   offset + sizeof (fhdr) + fhdr.f_opthdr,
-			   sects_size, error_callback, data, &sects_view))
+                           offset + sizeof (fhdr) + fhdr.f_opthdr, sects_size,
+                           error_callback, data, &sects_view))
     goto fail;
   sects_view_valid = 1;
-  sects = (const b_xcoff_scnhdr *) sects_view.data;
+  sects = (const b_xcoff_scnhdr *)sects_view.data;
 
   /* FIXME: assumes only one .text section.  */
   for (i = 0; i < fhdr.f_nscns; ++i)
@@ -1163,8 +1172,7 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
      or given by ldinfo.  This address will include the XCOFF
      headers.  */
   base_address.m = ((exe ? XCOFF_AIX_TEXTBASE : base_address.m)
-		    + stext->s_scnptr
-		    - stext->s_paddr);
+                    + stext->s_scnptr - stext->s_paddr);
 
   lnnoptr = stext->s_lnnoptr;
   nlnno = stext->s_nlnno;
@@ -1175,14 +1183,14 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
       int sntext = i + 1;
       /* Find the matching .ovrflo section.  */
       for (i = 0; i < fhdr.f_nscns; ++i)
-	{
-	  if (((sects[i].s_flags & 0xffff) == STYP_OVRFLO)
-	      && sects[i].s_nlnno == sntext)
-	    {
-	      nlnno = sects[i].s_vaddr;
-	      break;
-	    }
-	}
+        {
+          if (((sects[i].s_flags & 0xffff) == STYP_OVRFLO)
+              && sects[i].s_nlnno == sntext)
+            {
+              nlnno = sects[i].s_vaddr;
+              break;
+            }
+        }
     }
 #endif
 
@@ -1193,45 +1201,42 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
       struct xcoff_syminfo_data *sdata;
 
       /* Symbol table is followed by the string table.  The string table
-	 starts with its length (on 4 bytes).
-	 Map the symbol table and the length of the string table.  */
+         starts with its length (on 4 bytes).
+         Map the symbol table and the length of the string table.  */
       syms_size = fhdr.f_nsyms * sizeof (b_xcoff_syment);
 
       if (!backtrace_get_view (state, descriptor, offset + fhdr.f_symptr,
-			       syms_size + 4, error_callback, data,
-			       &syms_view))
-	goto fail;
+                               syms_size + 4, error_callback, data,
+                               &syms_view))
+        goto fail;
       syms_view_valid = 1;
 
-      memcpy (&str_size,
-	      (const unsigned char *) syms_view.data + syms_size,
-	      4);
+      memcpy (&str_size, (const unsigned char *)syms_view.data + syms_size, 4);
 
       str_off = fhdr.f_symptr + syms_size;
 
       if (str_size > 4)
-	{
-	  /* Map string table (including the length word).  */
+        {
+          /* Map string table (including the length word).  */
 
-	  if (!backtrace_get_view (state, descriptor, offset + str_off,
-				   str_size, error_callback, data, &str_view))
-	    goto fail;
-	  str_view_valid = 1;
-	}
+          if (!backtrace_get_view (state, descriptor, offset + str_off,
+                                   str_size, error_callback, data, &str_view))
+            goto fail;
+          str_view_valid = 1;
+        }
 
-      sdata = ((struct xcoff_syminfo_data *)
-	       backtrace_alloc (state, sizeof *sdata, error_callback, data));
+      sdata = ((struct xcoff_syminfo_data *)backtrace_alloc (
+          state, sizeof *sdata, error_callback, data));
       if (sdata == NULL)
-	goto fail;
+        goto fail;
 
-      if (!xcoff_initialize_syminfo (state, base_address,
-				     syms_view.data, fhdr.f_nsyms,
-				     str_view.data, str_size,
-				     error_callback, data, sdata))
-	{
-	  backtrace_free (state, sdata, sizeof *sdata, error_callback, data);
-	  goto fail;
-	}
+      if (!xcoff_initialize_syminfo (state, base_address, syms_view.data,
+                                     fhdr.f_nsyms, str_view.data, str_size,
+                                     error_callback, data, sdata))
+        {
+          backtrace_free (state, sdata, sizeof *sdata, error_callback, data);
+          goto fail;
+        }
 
       *found_sym = 1;
 
@@ -1249,54 +1254,53 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
       off_t end;
       int idx;
 
-      if ((sects[i].s_flags & 0xffff) != STYP_DWARF
-	  || sects[i].s_size == 0)
-	continue;
+      if ((sects[i].s_flags & 0xffff) != STYP_DWARF || sects[i].s_size == 0)
+        continue;
       /* Map DWARF section to array index.  */
       switch (sects[i].s_flags & 0xffff0000)
-	{
-	  case SSUBTYP_DWINFO:
-	    idx = DEBUG_INFO;
-	    break;
-	  case SSUBTYP_DWLINE:
-	    idx = DEBUG_LINE;
-	    break;
-	  case SSUBTYP_DWABREV:
-	    idx = DEBUG_ABBREV;
-	    break;
-	  case SSUBTYP_DWRNGES:
-	    idx = DEBUG_RANGES;
-	    break;
-	  case SSUBTYP_DWSTR:
-	    idx = DEBUG_STR;
-	    break;
-	  default:
-	    continue;
-	}
-      if (min_offset == 0 || (off_t) sects[i].s_scnptr < min_offset)
-	min_offset = sects[i].s_scnptr;
+        {
+        case SSUBTYP_DWINFO:
+          idx = DEBUG_INFO;
+          break;
+        case SSUBTYP_DWLINE:
+          idx = DEBUG_LINE;
+          break;
+        case SSUBTYP_DWABREV:
+          idx = DEBUG_ABBREV;
+          break;
+        case SSUBTYP_DWRNGES:
+          idx = DEBUG_RANGES;
+          break;
+        case SSUBTYP_DWSTR:
+          idx = DEBUG_STR;
+          break;
+        default:
+          continue;
+        }
+      if (min_offset == 0 || (off_t)sects[i].s_scnptr < min_offset)
+        min_offset = sects[i].s_scnptr;
       end = sects[i].s_scnptr + sects[i].s_size;
       if (end > max_offset)
-	max_offset = end;
+        max_offset = end;
       dwsect[idx].offset = sects[i].s_scnptr;
       dwsect[idx].size = sects[i].s_size;
     }
   if (min_offset != 0 && max_offset != 0)
     {
       if (!backtrace_get_view (state, descriptor, offset + min_offset,
-			       max_offset - min_offset,
-			       error_callback, data, &dwarf_view))
-	goto fail;
+                               max_offset - min_offset, error_callback, data,
+                               &dwarf_view))
+        goto fail;
       dwarf_view_valid = 1;
 
-      for (i = 0; i < (int) DEBUG_MAX; ++i)
-	{
-	  if (dwsect[i].offset == 0)
-	    dwsect[i].data = NULL;
-	  else
-	    dwsect[i].data = ((const unsigned char *) dwarf_view.data
-			      + (dwsect[i].offset - min_offset));
-	}
+      for (i = 0; i < (int)DEBUG_MAX; ++i)
+        {
+          if (dwsect[i].offset == 0)
+            dwsect[i].data = NULL;
+          else
+            dwsect[i].data = ((const unsigned char *)dwarf_view.data
+                              + (dwsect[i].offset - min_offset));
+        }
 
       memset (&dwarf_sections, 0, sizeof dwarf_sections);
 
@@ -1312,32 +1316,31 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
       dwarf_sections.size[DEBUG_STR] = dwsect[DEBUG_STR].size;
 
       if (!backtrace_dwarf_add (state, base_address, &dwarf_sections,
-				1, /* big endian */
-				NULL, /* altlink */
-				error_callback, data, fileline_fn,
-				NULL /* returned fileline_entry */))
-	goto fail;
+                                1,    /* big endian */
+                                NULL, /* altlink */
+                                error_callback, data, fileline_fn,
+                                NULL /* returned fileline_entry */))
+        goto fail;
     }
 
   /* Read the XCOFF line number entries if DWARF sections not found.  */
 
   if (!dwarf_view_valid && fhdr.f_symptr != 0 && lnnoptr != 0)
     {
-      size_t linenos_size = (size_t) nlnno * LINESZ;
+      size_t linenos_size = (size_t)nlnno * LINESZ;
 
       /* We never release this view.  */
       if (!backtrace_get_view (state, descriptor, offset + lnnoptr,
-			       linenos_size,
-			       error_callback, data, &linenos_view))
-	goto fail;
+                               linenos_size, error_callback, data,
+                               &linenos_view))
+        goto fail;
       linenos_view_valid = 1;
 
-      if (xcoff_initialize_fileline (state, base_address, sects,
-				     syms_view.data, fhdr.f_nsyms,
-				     str_view.data, str_size,
-				     linenos_view.data, linenos_size,
-				     lnnoptr, error_callback, data))
-	*fileline_fn = xcoff_fileline;
+      if (xcoff_initialize_fileline (
+              state, base_address, sects, syms_view.data, fhdr.f_nsyms,
+              str_view.data, str_size, linenos_view.data, linenos_size,
+              lnnoptr, error_callback, data))
+        *fileline_fn = xcoff_fileline;
     }
 
   backtrace_release_view (state, &sects_view, error_callback, data);
@@ -1353,7 +1356,7 @@ xcoff_add (struct backtrace_state *state, int descriptor, off_t offset,
 
   return 1;
 
- fail:
+fail:
   if (sects_view_valid)
     backtrace_release_view (state, &sects_view, error_callback, data);
   if (str_view_valid)
@@ -1396,9 +1399,9 @@ xcoff_parse_decimal (const char *buf, size_t size, off_t *off)
 
 static int
 xcoff_armem_add (struct backtrace_state *state, int descriptor,
-		 struct libbacktrace_base_address base_address,
-		 const char *member, backtrace_error_callback error_callback,
-		 void *data, fileline *fileline_fn, int *found_sym)
+                 struct libbacktrace_base_address base_address,
+                 const char *member, backtrace_error_callback error_callback,
+                 void *data, fileline *fileline_fn, int *found_sym)
 {
   struct backtrace_view view;
   b_ar_fl_hdr fl_hdr;
@@ -1412,7 +1415,7 @@ xcoff_armem_add (struct backtrace_state *state, int descriptor,
   /* Map archive fixed-length header.  */
 
   if (!backtrace_get_view (state, descriptor, 0, sizeof (b_ar_fl_hdr),
-			   error_callback, data, &view))
+                           error_callback, data, &view))
     goto fail;
 
   memcpy (&fl_hdr, view.data, sizeof (b_ar_fl_hdr));
@@ -1432,45 +1435,45 @@ xcoff_armem_add (struct backtrace_state *state, int descriptor,
       /* Map archive member header and member name.  */
 
       if (!backtrace_get_view (state, descriptor, off,
-			       sizeof (b_ar_hdr) + memlen,
-			       error_callback, data, &view))
-	break;
+                               sizeof (b_ar_hdr) + memlen, error_callback,
+                               data, &view))
+        break;
 
-      ar_hdr = (const b_ar_hdr *) view.data;
+      ar_hdr = (const b_ar_hdr *)view.data;
 
       /* Read archive member name length.  */
       if (!xcoff_parse_decimal (ar_hdr->ar_namlen, sizeof ar_hdr->ar_namlen,
-				&len))
-	{
-	  backtrace_release_view (state, &view, error_callback, data);
-	  break;
-	}
+                                &len))
+        {
+          backtrace_release_view (state, &view, error_callback, data);
+          break;
+        }
       if (len == memlen && !memcmp (ar_hdr->ar_name, member, memlen))
-	{
-	  off = (off + sizeof (b_ar_hdr) + memlen + 1) & ~1;
+        {
+          off = (off + sizeof (b_ar_hdr) + memlen + 1) & ~1;
 
-	  /* The archive can contain several members with the same name
-	     (e.g. 32-bit and 64-bit), so continue if not ok.  */
+          /* The archive can contain several members with the same name
+             (e.g. 32-bit and 64-bit), so continue if not ok.  */
 
-	  if (xcoff_add (state, descriptor, off, base_address, error_callback,
-			 data, fileline_fn, found_sym, 0))
-	    {
-	      backtrace_release_view (state, &view, error_callback, data);
-	      return 1;
-	    }
-	}
+          if (xcoff_add (state, descriptor, off, base_address, error_callback,
+                         data, fileline_fn, found_sym, 0))
+            {
+              backtrace_release_view (state, &view, error_callback, data);
+              return 1;
+            }
+        }
 
       /* Read offset of next archive member.  */
       if (!xcoff_parse_decimal (ar_hdr->ar_nxtmem, sizeof ar_hdr->ar_nxtmem,
-				&off))
-	{
-	  backtrace_release_view (state, &view, error_callback, data);
-	  break;
-	}
+                                &off))
+        {
+          backtrace_release_view (state, &view, error_callback, data);
+          break;
+        }
       backtrace_release_view (state, &view, error_callback, data);
     }
 
- fail:
+fail:
   /* No matching member found.  */
   backtrace_close (descriptor, error_callback, data);
   return 0;
@@ -1480,8 +1483,8 @@ xcoff_armem_add (struct backtrace_state *state, int descriptor,
 
 static void
 xcoff_add_shared_libs (struct backtrace_state *state,
-		       backtrace_error_callback error_callback,
-		       void *data, fileline *fileline_fn, int *found_sym)
+                       backtrace_error_callback error_callback, void *data,
+                       fileline *fileline_fn, int *found_sym)
 {
   const struct ld_info *ldinfo;
   void *buf;
@@ -1500,13 +1503,13 @@ xcoff_add_shared_libs (struct backtrace_state *state,
     {
       buf = realloc (buf, buflen);
       if (buf == NULL)
-	{
-	  ret = -1;
-	  break;
-	}
+        {
+          ret = -1;
+          break;
+        }
       ret = loadquery (L_GETINFO, buf, buflen);
       if (ret == 0)
-	break;
+        break;
       buflen *= 2;
     }
   while (ret == -1 && errno == ENOMEM);
@@ -1516,45 +1519,45 @@ xcoff_add_shared_libs (struct backtrace_state *state,
       return;
     }
 
-  ldinfo = (const struct ld_info *) buf;
-  while ((const char *) ldinfo < (const char *) buf + buflen)
+  ldinfo = (const struct ld_info *)buf;
+  while ((const char *)ldinfo < (const char *)buf + buflen)
     {
       struct libbacktrace_base_address base_address;
 
       if (*ldinfo->ldinfo_filename != '/')
-	goto next;
+        goto next;
 
       descriptor = backtrace_open (ldinfo->ldinfo_filename, error_callback,
-				   data, &does_not_exist);
+                                   data, &does_not_exist);
       if (descriptor < 0)
-	goto next;
+        goto next;
 
       /* Check if it is an archive (member name not empty).  */
 
       member = ldinfo->ldinfo_filename + strlen (ldinfo->ldinfo_filename) + 1;
       memset (&base_address, 0, sizeof base_address);
-      base_address.m = (uintptr_t) ldinfo->ldinfo_textorg;
+      base_address.m = (uintptr_t)ldinfo->ldinfo_textorg;
       if (*member)
-	{
-	  xcoff_armem_add (state, descriptor, base_address, member,
-			   error_callback, data, fileline_fn, &lib_found_sym);
-	}
+        {
+          xcoff_armem_add (state, descriptor, base_address, member,
+                           error_callback, data, fileline_fn, &lib_found_sym);
+        }
       else
-	{
-	  xcoff_add (state, descriptor, 0, base_address, error_callback, data,
-		     fileline_fn, &lib_found_sym, 0);
-	}
+        {
+          xcoff_add (state, descriptor, 0, base_address, error_callback, data,
+                     fileline_fn, &lib_found_sym, 0);
+        }
       if (lib_found_sym)
-	*found_sym = 1;
+        *found_sym = 1;
 
- next:
+    next:
       if (ldinfo->ldinfo_next == 0)
-	break;
-      ldinfo = (const struct ld_info *) ((const char *) ldinfo
-					 + ldinfo->ldinfo_next);
+        break;
+      ldinfo = (const struct ld_info *)((const char *)ldinfo
+                                        + ldinfo->ldinfo_next);
     }
 
-    free (buf);
+  free (buf);
 }
 #endif /* HAVE_LOADQUERY */
 
@@ -1563,9 +1566,9 @@ xcoff_add_shared_libs (struct backtrace_state *state,
 
 int
 backtrace_initialize (struct backtrace_state *state,
-		      const char *filename ATTRIBUTE_UNUSED, int descriptor,
-		      backtrace_error_callback error_callback,
-		      void *data, fileline *fileline_fn)
+                      const char *filename ATTRIBUTE_UNUSED, int descriptor,
+                      backtrace_error_callback error_callback, void *data,
+                      fileline *fileline_fn)
 {
   struct libbacktrace_base_address zero_base_address;
   int ret;
@@ -1573,36 +1576,36 @@ backtrace_initialize (struct backtrace_state *state,
   fileline xcoff_fileline_fn = xcoff_nodebug;
 
   memset (&zero_base_address, 0, sizeof zero_base_address);
-  ret = xcoff_add (state, descriptor, 0, zero_base_address,
-		   error_callback, data, &xcoff_fileline_fn, &found_sym, 1);
+  ret = xcoff_add (state, descriptor, 0, zero_base_address, error_callback,
+                   data, &xcoff_fileline_fn, &found_sym, 1);
   if (!ret)
     return 0;
 
 #ifdef HAVE_LOADQUERY
   xcoff_add_shared_libs (state, error_callback, data, &xcoff_fileline_fn,
-			 &found_sym);
+                         &found_sym);
 #endif
 
   if (!state->threaded)
     {
       if (found_sym)
-	state->syminfo_fn = xcoff_syminfo;
+        state->syminfo_fn = xcoff_syminfo;
       else if (state->syminfo_fn == NULL)
-	state->syminfo_fn = xcoff_nosyms;
+        state->syminfo_fn = xcoff_nosyms;
     }
   else
     {
       if (found_sym)
-	backtrace_atomic_store_pointer (&state->syminfo_fn, xcoff_syminfo);
+        backtrace_atomic_store_pointer (&state->syminfo_fn, xcoff_syminfo);
       else
-	(void) __sync_bool_compare_and_swap (&state->syminfo_fn, NULL,
-					     xcoff_nosyms);
+        (void)__sync_bool_compare_and_swap (&state->syminfo_fn, NULL,
+                                            xcoff_nosyms);
     }
 
   if (!state->threaded)
     {
       if (state->fileline_fn == NULL || state->fileline_fn == xcoff_nodebug)
-	*fileline_fn = xcoff_fileline_fn;
+        *fileline_fn = xcoff_fileline_fn;
     }
   else
     {
@@ -1610,7 +1613,7 @@ backtrace_initialize (struct backtrace_state *state,
 
       current_fn = backtrace_atomic_load_pointer (&state->fileline_fn);
       if (current_fn == NULL || current_fn == xcoff_nodebug)
-	*fileline_fn = xcoff_fileline_fn;
+        *fileline_fn = xcoff_fileline_fn;
     }
 
   return 1;

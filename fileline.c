@@ -32,14 +32,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
 
 #include "config.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
-#if defined (HAVE_KERN_PROC_ARGS) || defined (HAVE_KERN_PROC)
+#if defined(HAVE_KERN_PROC_ARGS) || defined(HAVE_KERN_PROC)
 #include <sys/sysctl.h>
 #endif
 
@@ -73,7 +73,7 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #ifdef __hpux__
 static char *
 hpux_get_executable_path (struct backtrace_state *state,
-			  backtrace_error_callback error_callback, void *data)
+                          backtrace_error_callback error_callback, void *data)
 {
   struct shl_descriptor *desc;
   size_t len = sizeof (struct shl_descriptor);
@@ -97,7 +97,7 @@ hpux_get_executable_path (struct backtrace_state *state,
 
 #endif
 
-#if !defined (HAVE_KERN_PROC_ARGS) && !defined (HAVE_KERN_PROC)
+#if !defined(HAVE_KERN_PROC_ARGS) && !defined(HAVE_KERN_PROC)
 
 #define sysctl_exec_name1(state, error_callback, data) NULL
 #define sysctl_exec_name2(state, error_callback, data) NULL
@@ -105,9 +105,9 @@ hpux_get_executable_path (struct backtrace_state *state,
 #else /* defined (HAVE_KERN_PROC_ARGS) || |defined (HAVE_KERN_PROC) */
 
 static char *
-sysctl_exec_name (struct backtrace_state *state,
-		  int mib0, int mib1, int mib2, int mib3,
-		  backtrace_error_callback error_callback, void *data)
+sysctl_exec_name (struct backtrace_state *state, int mib0, int mib1, int mib2,
+                  int mib3, backtrace_error_callback error_callback,
+                  void *data)
 {
   int mib[4];
   size_t len;
@@ -121,7 +121,7 @@ sysctl_exec_name (struct backtrace_state *state,
 
   if (sysctl (mib, 4, NULL, &len, NULL, 0) < 0)
     return NULL;
-  name = (char *) backtrace_alloc (state, len, error_callback, data);
+  name = (char *)backtrace_alloc (state, len, error_callback, data);
   if (name == NULL)
     return NULL;
   rlen = len;
@@ -137,11 +137,11 @@ sysctl_exec_name (struct backtrace_state *state,
 
 static char *
 sysctl_exec_name1 (struct backtrace_state *state,
-		   backtrace_error_callback error_callback, void *data)
+                   backtrace_error_callback error_callback, void *data)
 {
   /* This variant is used on NetBSD.  */
   return sysctl_exec_name (state, CTL_KERN, KERN_PROC_ARGS, -1,
-			   KERN_PROC_PATHNAME, error_callback, data);
+                           KERN_PROC_PATHNAME, error_callback, data);
 }
 
 #else
@@ -154,11 +154,11 @@ sysctl_exec_name1 (struct backtrace_state *state,
 
 static char *
 sysctl_exec_name2 (struct backtrace_state *state,
-		   backtrace_error_callback error_callback, void *data)
+                   backtrace_error_callback error_callback, void *data)
 {
   /* This variant is used on FreeBSD.  */
   return sysctl_exec_name (state, CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1,
-			   error_callback, data);
+                           error_callback, data);
 }
 
 #else
@@ -173,7 +173,7 @@ sysctl_exec_name2 (struct backtrace_state *state,
 
 static char *
 macho_get_executable_path (struct backtrace_state *state,
-			   backtrace_error_callback error_callback, void *data)
+                           backtrace_error_callback error_callback, void *data)
 {
   uint32_t len;
   char *name;
@@ -181,7 +181,7 @@ macho_get_executable_path (struct backtrace_state *state,
   len = 0;
   if (_NSGetExecutablePath (NULL, &len) == 0)
     return NULL;
-  name = (char *) backtrace_alloc (state, len, error_callback, data);
+  name = (char *)backtrace_alloc (state, len, error_callback, data);
   if (name == NULL)
     return NULL;
   if (_NSGetExecutablePath (name, &len) != 0)
@@ -213,8 +213,9 @@ macho_get_executable_path (struct backtrace_state *state,
 #define FILENAME_BUF_SIZE (MAX_PATH)
 
 static char *
-windows_get_executable_path (char *buf, backtrace_error_callback error_callback,
-			     void *data)
+windows_get_executable_path (char *buf,
+                             backtrace_error_callback error_callback,
+                             void *data)
 {
   size_t got;
   int error;
@@ -224,9 +225,8 @@ windows_get_executable_path (char *buf, backtrace_error_callback error_callback,
   if (got == 0
       || (got == FILENAME_BUF_SIZE - 1 && error == ERROR_INSUFFICIENT_BUFFER))
     {
-      error_callback (data,
-		      "could not get the filename of the current executable",
-		      error);
+      error_callback (
+          data, "could not get the filename of the current executable", error);
       return NULL;
     }
   return buf;
@@ -244,7 +244,7 @@ windows_get_executable_path (char *buf, backtrace_error_callback error_callback,
 
 static int
 fileline_initialize (struct backtrace_state *state,
-		     backtrace_error_callback error_callback, void *data)
+                     backtrace_error_callback error_callback, void *data)
 {
   int failed;
   fileline fileline_fn;
@@ -257,7 +257,8 @@ fileline_initialize (struct backtrace_state *state,
   if (!state->threaded)
     failed = state->fileline_initialization_failed;
   else
-    failed = backtrace_atomic_load_int (&state->fileline_initialization_failed);
+    failed
+        = backtrace_atomic_load_int (&state->fileline_initialization_failed);
 
   if (failed)
     {
@@ -281,89 +282,88 @@ fileline_initialize (struct backtrace_state *state,
       int does_not_exist;
 
       switch (pass)
-	{
-	case 0:
-	  filename = state->filename;
-	  break;
-	case 1:
-	  filename = getexecname ();
-	  break;
-	case 2:
-	  /* Test this before /proc/self/exe, as the latter exists but points
-	     to the wine binary (and thus doesn't work).  */
-	  filename = windows_executable_filename ();
-	  break;
-	case 3:
-	  filename = "/proc/self/exe";
-	  break;
-	case 4:
-	  filename = "/proc/curproc/file";
-	  break;
-	case 5:
-	  snprintf (buf, sizeof (buf), "/proc/%ld/object/a.out",
-		    (long) getpid ());
-	  filename = buf;
-	  break;
-	case 6:
-	  filename = sysctl_exec_name1 (state, error_callback, data);
-	  break;
-	case 7:
-	  filename = sysctl_exec_name2 (state, error_callback, data);
-	  break;
-	case 8:
-	  filename = macho_get_executable_path (state, error_callback, data);
-	  break;
-	case 9:
-	  filename = windows_get_executable_path (buf, error_callback, data);
-	  break;
-	case 10:
-	  filename = hpux_get_executable_path (state, error_callback, data);
-	  break;
-	default:
-	  abort ();
-	}
+        {
+        case 0:
+          filename = state->filename;
+          break;
+        case 1:
+          filename = getexecname ();
+          break;
+        case 2:
+          /* Test this before /proc/self/exe, as the latter exists but points
+             to the wine binary (and thus doesn't work).  */
+          filename = windows_executable_filename ();
+          break;
+        case 3:
+          filename = "/proc/self/exe";
+          break;
+        case 4:
+          filename = "/proc/curproc/file";
+          break;
+        case 5:
+          snprintf (buf, sizeof (buf), "/proc/%ld/object/a.out",
+                    (long)getpid ());
+          filename = buf;
+          break;
+        case 6:
+          filename = sysctl_exec_name1 (state, error_callback, data);
+          break;
+        case 7:
+          filename = sysctl_exec_name2 (state, error_callback, data);
+          break;
+        case 8:
+          filename = macho_get_executable_path (state, error_callback, data);
+          break;
+        case 9:
+          filename = windows_get_executable_path (buf, error_callback, data);
+          break;
+        case 10:
+          filename = hpux_get_executable_path (state, error_callback, data);
+          break;
+        default:
+          abort ();
+        }
 
       if (filename == NULL)
-	continue;
+        continue;
 
-      descriptor = backtrace_open (filename, error_callback, data,
-				   &does_not_exist);
+      descriptor
+          = backtrace_open (filename, error_callback, data, &does_not_exist);
       if (descriptor < 0 && !does_not_exist)
-	{
-	  called_error_callback = 1;
-	  break;
-	}
+        {
+          called_error_callback = 1;
+          break;
+        }
       if (descriptor >= 0)
-	break;
+        break;
     }
 
   if (descriptor < 0)
     {
       if (!called_error_callback)
-	{
-	  if (state->filename != NULL)
-	    error_callback (data, state->filename, ENOENT);
-	  else
-	    error_callback (data,
-			    "libbacktrace could not find executable to open",
-			    0);
-	}
+        {
+          if (state->filename != NULL)
+            error_callback (data, state->filename, ENOENT);
+          else
+            error_callback (
+                data, "libbacktrace could not find executable to open", 0);
+        }
       failed = 1;
     }
 
   if (!failed)
     {
       if (!backtrace_initialize (state, filename, descriptor, error_callback,
-				 data, &fileline_fn))
-	failed = 1;
+                                 data, &fileline_fn))
+        failed = 1;
     }
 
   if (failed)
     {
       if (!state->threaded)
-	state->fileline_initialization_failed = 1;
+        state->fileline_initialization_failed = 1;
       else
-	backtrace_atomic_store_int (&state->fileline_initialization_failed, 1);
+        backtrace_atomic_store_int (&state->fileline_initialization_failed, 1);
       return 0;
     }
 
@@ -374,7 +374,7 @@ fileline_initialize (struct backtrace_state *state,
       backtrace_atomic_store_pointer (&state->fileline_fn, fileline_fn);
 
       /* Note that if two threads initialize at once, one of the data
-	 sets may be leaked.  */
+         sets may be leaked.  */
     }
 
   return 1;
@@ -384,8 +384,8 @@ fileline_initialize (struct backtrace_state *state,
 
 int
 backtrace_pcinfo (struct backtrace_state *state, uintptr_t pc,
-		  backtrace_full_callback callback,
-		  backtrace_error_callback error_callback, void *data)
+                  backtrace_full_callback callback,
+                  backtrace_error_callback error_callback, void *data)
 {
   if (!fileline_initialize (state, error_callback, data))
     return 0;
@@ -400,8 +400,8 @@ backtrace_pcinfo (struct backtrace_state *state, uintptr_t pc,
 
 int
 backtrace_syminfo (struct backtrace_state *state, uintptr_t pc,
-		   backtrace_syminfo_callback callback,
-		   backtrace_error_callback error_callback, void *data)
+                   backtrace_syminfo_callback callback,
+                   backtrace_error_callback error_callback, void *data)
 {
   if (!fileline_initialize (state, error_callback, data))
     return 0;
@@ -419,11 +419,11 @@ backtrace_syminfo (struct backtrace_state *state, uintptr_t pc,
 
 void
 backtrace_syminfo_to_full_callback (void *data, uintptr_t pc,
-				    const char *symname,
-				    uintptr_t symval ATTRIBUTE_UNUSED,
-				    uintptr_t symsize ATTRIBUTE_UNUSED)
+                                    const char *symname,
+                                    uintptr_t symval ATTRIBUTE_UNUSED,
+                                    uintptr_t symsize ATTRIBUTE_UNUSED)
 {
-  struct backtrace_call_full *bdata = (struct backtrace_call_full *) data;
+  struct backtrace_call_full *bdata = (struct backtrace_call_full *)data;
 
   bdata->ret = bdata->full_callback (bdata->full_data, pc, NULL, 0, symname);
 }
@@ -433,9 +433,9 @@ backtrace_syminfo_to_full_callback (void *data, uintptr_t pc,
 
 void
 backtrace_syminfo_to_full_error_callback (void *data, const char *msg,
-					  int errnum)
+                                          int errnum)
 {
-  struct backtrace_call_full *bdata = (struct backtrace_call_full *) data;
+  struct backtrace_call_full *bdata = (struct backtrace_call_full *)data;
 
   bdata->full_error_callback (bdata->full_data, msg, errnum);
 }

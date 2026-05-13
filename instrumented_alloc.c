@@ -31,17 +31,17 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.  */
 
 /* Include all the header files of alloc here, to make sure they're not
-   processed when including alloc.c below, such that the redefinitions of malloc
-   and realloc are only effective in alloc.c itself.  This does not work for
-   config.h, because it's not wrapped in "#ifndef CONFIG_H\n#define CONFIG_H"
-   and "#endif" but that does not seem to be harmful.  */
+   processed when including alloc.c below, such that the redefinitions of
+   malloc and realloc are only effective in alloc.c itself.  This does not work
+   for config.h, because it's not wrapped in "#ifndef CONFIG_H\n#define
+   CONFIG_H" and "#endif" but that does not seem to be harmful.  */
 
 #include "config.h"
 
 #include <errno.h>
+#include <inttypes.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <inttypes.h>
 
 #include "backtrace.h"
 #include "internal.h"
@@ -85,7 +85,7 @@ instrumented_realloc (void *ptr, size_t size)
   if (size != 0)
     {
       if (at_fail_alloc_p ())
-	return NULL;
+        return NULL;
     }
 
   res = realloc (ptr, size);

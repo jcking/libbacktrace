@@ -33,11 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include "config.h"
 
 #include <errno.h>
-#include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/mman.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "backtrace.h"
 #include "internal.h"
@@ -88,19 +88,19 @@ backtrace_free_locked (struct backtrace_state *state, void *addr, size_t size)
       c = 0;
       ppsmall = NULL;
       for (pp = &state->freelist; *pp != NULL; pp = &(*pp)->next)
-	{
-	  if (ppsmall == NULL || (*pp)->size < (*ppsmall)->size)
-	    ppsmall = pp;
-	  ++c;
-	}
+        {
+          if (ppsmall == NULL || (*pp)->size < (*ppsmall)->size)
+            ppsmall = pp;
+          ++c;
+        }
       if (c >= 16)
-	{
-	  if (size <= (*ppsmall)->size)
-	    return;
-	  *ppsmall = (*ppsmall)->next;
-	}
+        {
+          if (size <= (*ppsmall)->size)
+            return;
+          *ppsmall = (*ppsmall)->next;
+        }
 
-      p = (struct backtrace_freelist_struct *) addr;
+      p = (struct backtrace_freelist_struct *)addr;
       p->next = state->freelist;
       p->size = size;
       state->freelist = p;
@@ -111,9 +111,8 @@ backtrace_free_locked (struct backtrace_state *state, void *addr, size_t size)
    report an error.  */
 
 void *
-backtrace_alloc (struct backtrace_state *state,
-		 size_t size, backtrace_error_callback error_callback,
-		 void *data)
+backtrace_alloc (struct backtrace_state *state, size_t size,
+                 backtrace_error_callback error_callback, void *data)
 {
   void *ret;
   int locked;
@@ -137,29 +136,29 @@ backtrace_alloc (struct backtrace_state *state,
   if (locked)
     {
       for (pp = &state->freelist; *pp != NULL; pp = &(*pp)->next)
-	{
-	  if ((*pp)->size >= size)
-	    {
-	      struct backtrace_freelist_struct *p;
+        {
+          if ((*pp)->size >= size)
+            {
+              struct backtrace_freelist_struct *p;
 
-	      p = *pp;
-	      *pp = p->next;
+              p = *pp;
+              *pp = p->next;
 
-	      /* Round for alignment; we assume that no type we care about
-		 is more than 8 bytes.  */
-	      size = (size + 7) & ~ (size_t) 7;
-	      if (size < p->size)
-		backtrace_free_locked (state, (char *) p + size,
-				       p->size - size);
+              /* Round for alignment; we assume that no type we care about
+                 is more than 8 bytes.  */
+              size = (size + 7) & ~(size_t)7;
+              if (size < p->size)
+                backtrace_free_locked (state, (char *)p + size,
+                                       p->size - size);
 
-	      ret = (void *) p;
+              ret = (void *)p;
 
-	      break;
-	    }
-	}
+              break;
+            }
+        }
 
       if (state->threaded)
-	__sync_lock_release (&state->lock_alloc);
+        __sync_lock_release (&state->lock_alloc);
     }
 
   if (ret == NULL)
@@ -167,23 +166,23 @@ backtrace_alloc (struct backtrace_state *state,
       /* Allocate a new page.  */
 
       pagesize = getpagesize ();
-      asksize = (size + pagesize - 1) & ~ (pagesize - 1);
+      asksize = (size + pagesize - 1) & ~(pagesize - 1);
       page = mmap (NULL, asksize, PROT_READ | PROT_WRITE,
-		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
       if (page == MAP_FAILED)
-	{
-	  if (error_callback)
-	    error_callback (data, "mmap", errno);
-	}
+        {
+          if (error_callback)
+            error_callback (data, "mmap", errno);
+        }
       else
-	{
-	  size = (size + 7) & ~ (size_t) 7;
-	  if (size < asksize)
-	    backtrace_free (state, (char *) page + size, asksize - size,
-			    error_callback, data);
+        {
+          size = (size + 7) & ~(size_t)7;
+          if (size < asksize)
+            backtrace_free (state, (char *)page + size, asksize - size,
+                            error_callback, data);
 
-	  ret = page;
-	}
+          ret = page;
+        }
     }
 
   return ret;
@@ -193,8 +192,8 @@ backtrace_alloc (struct backtrace_state *state,
 
 void
 backtrace_free (struct backtrace_state *state, void *addr, size_t size,
-		backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
-		void *data ATTRIBUTE_UNUSED)
+                backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
+                void *data ATTRIBUTE_UNUSED)
 {
   int locked;
 
@@ -208,14 +207,14 @@ backtrace_free (struct backtrace_state *state, void *addr, size_t size,
       size_t pagesize;
 
       pagesize = getpagesize ();
-      if (((uintptr_t) addr & (pagesize - 1)) == 0
-	  && (size & (pagesize - 1)) == 0)
-	{
-	  /* If munmap fails for some reason, just add the block to
-	     the freelist.  */
-	  if (munmap (addr, size) == 0)
-	    return;
-	}
+      if (((uintptr_t)addr & (pagesize - 1)) == 0
+          && (size & (pagesize - 1)) == 0)
+        {
+          /* If munmap fails for some reason, just add the block to
+             the freelist.  */
+          if (munmap (addr, size) == 0)
+            return;
+        }
     }
 
   /* If we can acquire the lock, add the new space to the free list.
@@ -233,16 +232,16 @@ backtrace_free (struct backtrace_state *state, void *addr, size_t size,
       backtrace_free_locked (state, addr, size);
 
       if (state->threaded)
-	__sync_lock_release (&state->lock_alloc);
+        __sync_lock_release (&state->lock_alloc);
     }
 }
 
 /* Grow VEC by SIZE bytes.  */
 
 void *
-backtrace_vector_grow (struct backtrace_state *state,size_t size,
-		       backtrace_error_callback error_callback,
-		       void *data, struct backtrace_vector *vec)
+backtrace_vector_grow (struct backtrace_state *state, size_t size,
+                       backtrace_error_callback error_callback, void *data,
+                       struct backtrace_vector *vec)
 {
   void *ret;
 
@@ -255,32 +254,32 @@ backtrace_vector_grow (struct backtrace_state *state,size_t size,
       pagesize = getpagesize ();
       alc = vec->size + size;
       if (vec->size == 0)
-	alc = 16 * size;
+        alc = 16 * size;
       else if (alc < pagesize)
-	{
-	  alc *= 2;
-	  if (alc > pagesize)
-	    alc = pagesize;
-	}
+        {
+          alc *= 2;
+          if (alc > pagesize)
+            alc = pagesize;
+        }
       else
-	{
-	  alc *= 2;
-	  alc = (alc + pagesize - 1) & ~ (pagesize - 1);
-	}
+        {
+          alc *= 2;
+          alc = (alc + pagesize - 1) & ~(pagesize - 1);
+        }
       base = backtrace_alloc (state, alc, error_callback, data);
       if (base == NULL)
-	return NULL;
+        return NULL;
       if (vec->base != NULL)
-	{
-	  memcpy (base, vec->base, vec->size);
-	  backtrace_free (state, vec->base, vec->size + vec->alc,
-			  error_callback, data);
-	}
+        {
+          memcpy (base, vec->base, vec->size);
+          backtrace_free (state, vec->base, vec->size + vec->alc,
+                          error_callback, data);
+        }
       vec->base = base;
       vec->alc = alc - vec->size;
     }
 
-  ret = (char *) vec->base + vec->size;
+  ret = (char *)vec->base + vec->size;
   vec->size += size;
   vec->alc -= size;
   return ret;
@@ -289,16 +288,16 @@ backtrace_vector_grow (struct backtrace_state *state,size_t size,
 /* Finish the current allocation on VEC.  */
 
 void *
-backtrace_vector_finish (
-  struct backtrace_state *state ATTRIBUTE_UNUSED,
-  struct backtrace_vector *vec,
-  backtrace_error_callback error_callback ATTRIBUTE_UNUSED,
-  void *data ATTRIBUTE_UNUSED)
+backtrace_vector_finish (struct backtrace_state *state ATTRIBUTE_UNUSED,
+                         struct backtrace_vector *vec,
+                         backtrace_error_callback error_callback
+                             ATTRIBUTE_UNUSED,
+                         void *data ATTRIBUTE_UNUSED)
 {
   void *ret;
 
   ret = vec->base;
-  vec->base = (char *) vec->base + vec->size;
+  vec->base = (char *)vec->base + vec->size;
   vec->size = 0;
   return ret;
 }
@@ -307,9 +306,8 @@ backtrace_vector_finish (
 
 int
 backtrace_vector_release (struct backtrace_state *state,
-			  struct backtrace_vector *vec,
-			  backtrace_error_callback error_callback,
-			  void *data)
+                          struct backtrace_vector *vec,
+                          backtrace_error_callback error_callback, void *data)
 {
   size_t size;
   size_t alc;
@@ -319,11 +317,11 @@ backtrace_vector_release (struct backtrace_state *state,
      boundary.  */
   size = vec->size;
   alc = vec->alc;
-  aligned = (size + 7) & ~ (size_t) 7;
+  aligned = (size + 7) & ~(size_t)7;
   alc -= aligned - size;
 
-  backtrace_free (state, (char *) vec->base + aligned, alc,
-		  error_callback, data);
+  backtrace_free (state, (char *)vec->base + aligned, alc, error_callback,
+                  data);
   vec->alc = 0;
   if (vec->size == 0)
     vec->base = NULL;

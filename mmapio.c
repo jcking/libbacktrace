@@ -33,8 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include "config.h"
 
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/mman.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "backtrace.h"
@@ -55,16 +55,16 @@ extern int getpagesize (void);
 
 int
 backtrace_get_view (struct backtrace_state *state ATTRIBUTE_UNUSED,
-		    int descriptor, off_t offset, uint64_t size,
-		    backtrace_error_callback error_callback,
-		    void *data, struct backtrace_view *view)
+                    int descriptor, off_t offset, uint64_t size,
+                    backtrace_error_callback error_callback, void *data,
+                    struct backtrace_view *view)
 {
   size_t pagesize;
   unsigned int inpage;
   off_t pageoff;
   void *map;
 
-  if ((uint64_t) (size_t) size != size)
+  if ((uint64_t)(size_t)size != size)
     {
       error_callback (data, "file size too large", 0);
       return 0;
@@ -75,7 +75,7 @@ backtrace_get_view (struct backtrace_state *state ATTRIBUTE_UNUSED,
   pageoff = offset - inpage;
 
   size += inpage;
-  size = (size + (pagesize - 1)) & ~ (pagesize - 1);
+  size = (size + (pagesize - 1)) & ~(pagesize - 1);
 
   map = mmap (NULL, size, PROT_READ, MAP_PRIVATE, descriptor, pageoff);
   if (map == MAP_FAILED)
@@ -84,7 +84,7 @@ backtrace_get_view (struct backtrace_state *state ATTRIBUTE_UNUSED,
       return 0;
     }
 
-  view->data = (char *) map + inpage;
+  view->data = (char *)map + inpage;
   view->base = map;
   view->len = size;
 
@@ -95,11 +95,11 @@ backtrace_get_view (struct backtrace_state *state ATTRIBUTE_UNUSED,
 
 void
 backtrace_release_view (struct backtrace_state *state ATTRIBUTE_UNUSED,
-			struct backtrace_view *view,
-			backtrace_error_callback error_callback,
-			void *data)
+                        struct backtrace_view *view,
+                        backtrace_error_callback error_callback, void *data)
 {
-  union {
+  union
+  {
     const void *cv;
     void *v;
   } const_cast;
